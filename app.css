@@ -109,6 +109,9 @@ button {
     border-radius: var(--radius-pill);
     box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.15);
     transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    max-width: calc(100vw - 20px);
 }
 .top-toolbar:hover {
     box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
@@ -155,6 +158,8 @@ button {
     display: flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap;
+    flex-wrap: nowrap;
 }
 .toolbar-divider {
     width: 1px;
@@ -177,6 +182,12 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.btn-label {
+    white-space: nowrap;
+    display: inline-block;
 }
 .btn-tool:hover {
     background: rgba(255, 255, 255, 0.18);
@@ -234,6 +245,8 @@ button {
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
     transition: all var(--transition-fast);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 .btn-save:hover {
     background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
@@ -560,14 +573,17 @@ button {
     align-items: center;
     justify-content: center;
     gap: 2px;
-    width: 48px;
+    width: 52px;
+    max-width: 56px;
     height: 44px;
+    padding: 2px 2px;
     background: rgba(239, 68, 68, 0.18);
     border: 1px solid rgba(239, 68, 68, 0.35);
     border-radius: 10px;
     color: #fca5a5;
     cursor: pointer;
     transition: all var(--transition-fast);
+    overflow: hidden;
 }
 .btn-dock-reset:hover {
     background: rgba(239, 68, 68, 0.3);
@@ -579,9 +595,20 @@ button {
     transform: scale(0.95);
 }
 .reset-text {
-    font-size: 10px;
+    font-size: clamp(7.5px, 0.9vw, 10px);
     font-weight: 700;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.1px;
+    line-height: 1.1;
+    max-width: 100%;
+    padding: 0 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 /* ==========================================================================
    Color Picker Popover Flyout
@@ -1052,8 +1079,38 @@ button {
     font-weight: 600;
 }
 /* ==========================================================================
-   Mobile Responsive Adjustments (Portrait & Landscape)
+   Mobile & Tablet Responsive Adjustments
    ========================================================================== */
+/* --- Tablet / Intermediate Screens (Keep top toolbar on one line) --- */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .top-toolbar {
+        gap: 8px;
+        padding: 0 10px 0 8px;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
+    .top-toolbar-actions {
+        gap: 4px;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
+    .btn-tool {
+        padding: 5px 8px;
+        gap: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .btn-save {
+        padding: 5px 10px;
+        font-size: 12px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .btn-label {
+        white-space: nowrap;
+    }
+}
 /* --- Mobile Portrait Mode (Dock shifts to bottom thumb-friendly bar) --- */
 @media (max-width: 768px) and (orientation: portrait),
 (max-width: 600px) {
