@@ -1052,9 +1052,25 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
     padding-top: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 2px;
+}
+.help-footer .btn-got-it,
+#btnGotIt {
+    width: auto !important;
+    min-width: fit-content;
+    height: auto !important;
+    min-height: 36px;
+    padding: 8px 22px !important;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    border-radius: var(--radius-pill);
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 .help-meta {
     display: flex;
@@ -1111,7 +1127,7 @@ button {
         white-space: nowrap;
         flex-shrink: 0;
     }
-    .btn-save {
+    .top-toolbar .btn-save {
         padding: 5px 10px;
         font-size: 12px;
         white-space: nowrap;
@@ -1173,18 +1189,18 @@ button {
         height: 18px;
         margin: 0 1px;
     }
-    .btn-save {
+    .top-toolbar .btn-save {
         width: 34px;
         height: 30px;
         padding: 0;
         justify-content: center;
         border-radius: 8px;
     }
-    .btn-save svg {
+    .top-toolbar .btn-save svg {
         width: 16px;
         height: 16px;
     }
-    .btn-save .btn-label {
+    .top-toolbar .btn-save .btn-label {
         display: none !important;
     }
     /* Bottom horizontal floating dock: scroll colors, keep brush & reset pinned */
@@ -1324,18 +1340,18 @@ button {
         height: 16px;
         margin: 0 1px;
     }
-    .btn-save {
+    .top-toolbar .btn-save {
         width: 30px;
         height: 24px;
         padding: 0;
         justify-content: center;
         border-radius: 6px;
     }
-    .btn-save svg {
+    .top-toolbar .btn-save svg {
         width: 14px;
         height: 14px;
     }
-    .btn-save .btn-label {
+    .top-toolbar .btn-save .btn-label {
         display: none !important;
     }
     /* Left dock: scroll colors vertically, keep brush & reset pinned at bottom */
