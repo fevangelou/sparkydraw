@@ -23,9 +23,15 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero frameworks or b
 
 - **Windows RDP-Style Top Toolbar**:
   - Sleek, compact floating pill at the top of the screen.
+  - **Fullscreen Toggle**: Uses the modern standard Fullscreen Web API (`requestFullscreen` / `exitFullscreen`) to hide all browser chrome and provide an immersive full-screen canvas (shortcut `F`).
   - **Save PNG Button**: Downloads the drawing directly to your local device with timestamped filenames formatted as `SparkyDraw_YYYYMMDD_HHmmss.png`.
   - **Undo & Redo**: Easy error recovery for young artists (plus `Ctrl+Z` / `Ctrl+Y` keyboard shortcuts).
   - **Clear Canvas**: With a gentle confirmation dialog to prevent accidental wipes.
+
+- **Mobile & Tablet Friendly**:
+  - **Portrait Mode**: Dock automatically transitions into a thumb-friendly horizontal dock at the bottom of the screen with touch scrolling and popovers opening upwards.
+  - **Landscape Mode**: Left dock and top toolbar switch to ultra-compact layouts leaving maximum vertical height for drawing.
+  - Safe orientation switching with offscreen canvas preservation.
 
 - **Local Persistence (`localStorage`)**:
   - Remembers your custom colors, selected brush size, active color, and even artwork across page refreshes — no login required.

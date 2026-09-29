@@ -1,143 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>SparkyDraw - Fun & Easy Drawing for Kids</title>
-  <meta name="description" content="SparkyDraw is a simple, kid-friendly drawing web app designed for tablets and touch screens with custom color slots and brush sizes.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="app.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1c26">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SparkyDraw - Fun & Easy Drawing for Kids</title>
+    <meta name="description" content="SparkyDraw is a simple, kid-friendly drawing web app designed for tablets and touch screens with custom color slots and brush sizes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
 </head>
+
 <body>
-  <!-- Top Toolbar (Windows RDP Bar style) -->
-  <header class="top-toolbar" id="topToolbar" role="toolbar" aria-label="Drawing actions">
-    <div class="top-toolbar-drag-handle" title="SparkyDraw Menu">
-      <span class="app-logo">
-        <svg class="spark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-        </svg>
-        <span class="app-title">SparkyDraw</span>
-      </span>
-    </div>
-
-    <div class="top-toolbar-actions">
-      <button type="button" class="btn-tool" id="btnUndo" title="Undo last stroke (Ctrl+Z)" aria-label="Undo">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 7v6h6"></path>
-          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
-        </svg>
-        <span class="btn-label">Undo</span>
-      </button>
-
-      <button type="button" class="btn-tool" id="btnRedo" title="Redo stroke (Ctrl+Y)" aria-label="Redo">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 7v6h-6"></path>
-          <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path>
-        </svg>
-        <span class="btn-label">Redo</span>
-      </button>
-
-      <button type="button" class="btn-tool" id="btnClear" title="Clear canvas" aria-label="Clear Canvas">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="3 6 5 6 21 6"></polyline>
-          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-        </svg>
-        <span class="btn-label">Clear</span>
-      </button>
-
-      <div class="toolbar-divider"></div>
-
-      <button type="button" class="btn-save" id="btnSave" title="Save drawing to local PNG image" aria-label="Save Image">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
-        <span class="btn-label">Save PNG</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Left Dock Toolbar (Ubuntu dock style) -->
-  <aside class="left-dock" id="leftDock" role="toolbar" aria-label="Drawing tools and colors">
-    <div class="dock-scroll-container">
-      <!-- Section: Color Slots (12 slots) -->
-      <div class="dock-section dock-colors">
-        <div class="dock-section-title">Colors</div>
-        <div class="color-slots-grid" id="colorSlotsGrid" role="radiogroup" aria-label="Color Palette">
-          <!-- Dynamically populated or rendered -->
+    <!-- Top Toolbar (Windows RDP Bar style) -->
+    <header class="top-toolbar" id="topToolbar" role="toolbar" aria-label="Drawing actions">
+        <div class="top-toolbar-drag-handle" title="SparkyDraw Menu">
+            <span class="app-logo">
+                <svg class="spark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span class="app-title">SparkyDraw</span>
+            </span>
         </div>
-      </div>
 
-      <div class="dock-divider"></div>
+        <div class="top-toolbar-actions">
+            <button type="button" class="btn-tool" id="btnUndo" title="Undo last stroke (Ctrl+Z)" aria-label="Undo">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 7v6h6"></path>
+                    <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                </svg>
+                <span class="btn-label">Undo</span>
+            </button>
 
-      <!-- Section: Brush Sizes -->
-      <div class="dock-section dock-brush">
-        <div class="dock-section-title">Brush</div>
-        <div class="brush-size-group" id="brushSizeGroup" role="radiogroup" aria-label="Brush Sizes">
-          <!-- Photoshop style dots small to large -->
+            <button type="button" class="btn-tool" id="btnRedo" title="Redo stroke (Ctrl+Y)" aria-label="Redo">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 7v6h-6"></path>
+                    <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path>
+                </svg>
+                <span class="btn-label">Redo</span>
+            </button>
+
+            <button type="button" class="btn-tool" id="btnClear" title="Clear canvas" aria-label="Clear Canvas">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span class="btn-label">Clear</span>
+            </button>
+
+            <button type="button" class="btn-tool" id="btnFullscreen" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+                <svg class="icon-fs-enter" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+                <svg class="icon-fs-exit" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+                </svg>
+                <span class="btn-label" id="lblFullscreen">Fullscreen</span>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <button type="button" class="btn-save" id="btnSave" title="Save drawing to local PNG image" aria-label="Save Image">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span class="btn-label">Save PNG</span>
+            </button>
         </div>
-      </div>
+    </header>
 
-      <div class="dock-divider"></div>
+    <!-- Left Dock Toolbar (Ubuntu dock style) -->
+    <aside class="left-dock" id="leftDock" role="toolbar" aria-label="Drawing tools and colors">
+        <div class="dock-scroll-container">
+            <!-- Section: Color Slots (12 slots) -->
+            <div class="dock-section dock-colors">
+                <div class="dock-section-title">Colors</div>
+                <div class="color-slots-grid" id="colorSlotsGrid" role="radiogroup" aria-label="Color Palette">
+                    <!-- Dynamically populated or rendered -->
+                </div>
+            </div>
 
-      <!-- Section: Reset Button -->
-      <div class="dock-section dock-reset">
-        <button type="button" class="btn-dock-reset" id="btnReset" title="Reset colors and brush size to defaults" aria-label="Reset UI Defaults">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-            <path d="M3 3v5h5"></path>
-          </svg>
-          <span class="reset-text">Reset</span>
-        </button>
-      </div>
-    </div>
-  </aside>
+            <div class="dock-divider"></div>
 
-  <!-- Color Picker Popover Flyout -->
-  <div class="color-popover" id="colorPopover" role="dialog" aria-label="Adjust Color" hidden>
-    <div class="popover-arrow"></div>
-    <div class="popover-content">
-      <div class="popover-header">
-        <span class="popover-title">Change Color</span>
-        <button type="button" class="popover-close" id="btnClosePopover" aria-label="Close">✕</button>
-      </div>
-      <div class="popover-body">
-        <label class="native-picker-wrapper" for="nativeColorInput">
-          <input type="color" id="nativeColorInput" value="#000000">
-          <span class="native-picker-preview" id="popoverPreviewSwatch"></span>
-          <span class="native-picker-label">Pick any color</span>
-        </label>
-        <div class="quick-swatches" id="quickSwatches" title="Quick presets">
-          <!-- Quick kid-friendly extra swatches -->
+            <!-- Section: Brush Sizes -->
+            <div class="dock-section dock-brush">
+                <div class="dock-section-title">Brush</div>
+                <div class="brush-size-group" id="brushSizeGroup" role="radiogroup" aria-label="Brush Sizes">
+                    <!-- Photoshop style dots small to large -->
+                </div>
+            </div>
+
+            <div class="dock-divider"></div>
+
+            <!-- Section: Reset Button -->
+            <div class="dock-section dock-reset">
+                <button type="button" class="btn-dock-reset" id="btnReset" title="Reset colors and brush size to defaults" aria-label="Reset UI Defaults">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                    </svg>
+                    <span class="reset-text">Reset</span>
+                </button>
+            </div>
         </div>
-      </div>
+    </aside>
+
+    <!-- Color Picker Popover Flyout -->
+    <div class="color-popover" id="colorPopover" role="dialog" aria-label="Adjust Color" hidden>
+        <div class="popover-arrow"></div>
+        <div class="popover-content">
+            <div class="popover-header">
+                <span class="popover-title">Change Color</span>
+                <button type="button" class="popover-close" id="btnClosePopover" aria-label="Close">✕</button>
+            </div>
+            <div class="popover-body">
+                <label class="native-picker-wrapper" for="nativeColorInput">
+                    <input type="color" id="nativeColorInput" value="#000000">
+                    <span class="native-picker-preview" id="popoverPreviewSwatch"></span>
+                    <span class="native-picker-label">Pick any color</span>
+                </label>
+                <div class="quick-swatches" id="quickSwatches" title="Quick presets">
+                    <!-- Quick kid-friendly extra swatches -->
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Drawing Canvas Area -->
-  <main class="canvas-container" id="canvasContainer">
-    <canvas id="drawingCanvas" aria-label="White drawing canvas"></canvas>
-    <div class="brush-cursor" id="brushCursor" aria-hidden="true"></div>
-  </main>
+    <!-- Drawing Canvas Area -->
+    <main class="canvas-container" id="canvasContainer">
+        <canvas id="drawingCanvas" aria-label="White drawing canvas"></canvas>
+        <div class="brush-cursor" id="brushCursor" aria-hidden="true"></div>
+    </main>
 
-  <!-- Toast Notification -->
-  <div class="toast-message" id="toastMessage" role="status" aria-live="polite" hidden></div>
+    <!-- Toast Notification -->
+    <div class="toast-message" id="toastMessage" role="status" aria-live="polite" hidden></div>
 
-  <!-- Modal Confirm for Clear -->
-  <div class="confirm-dialog-backdrop" id="clearDialog" hidden>
-    <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="clearDialogTitle">
-      <h2 id="clearDialogTitle" class="dialog-title">Start a new drawing?</h2>
-      <p class="dialog-text">This will clear your canvas. You can always use Undo if you change your mind!</p>
-      <div class="dialog-actions">
-        <button type="button" class="btn-cancel" id="btnCancelClear">Keep Drawing</button>
-        <button type="button" class="btn-confirm-clear" id="btnConfirmClear">Clear Canvas</button>
-      </div>
+    <!-- Modal Confirm for Clear -->
+    <div class="confirm-dialog-backdrop" id="clearDialog" hidden>
+        <div class="confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="clearDialogTitle">
+            <h2 id="clearDialogTitle" class="dialog-title">Start a new drawing?</h2>
+            <p class="dialog-text">This will clear your canvas. You can always use Undo if you change your mind!</p>
+            <div class="dialog-actions">
+                <button type="button" class="btn-cancel" id="btnCancelClear">Keep Drawing</button>
+                <button type="button" class="btn-confirm-clear" id="btnConfirmClear">Clear Canvas</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
+
 </html>

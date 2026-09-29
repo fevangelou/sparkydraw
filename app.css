@@ -1,779 +1,882 @@
 /* ==========================================================================
    SparkyDraw - Modern Vanilla CSS
    ========================================================================== */
-
 :root {
-  --font-family: 'Fredoka', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --bg-canvas: #ffffff;
-  
-  /* Dock / Toolbar Design System */
-  --dock-bg: rgba(26, 28, 38, 0.92);
-  --dock-border: rgba(255, 255, 255, 0.12);
-  --dock-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2);
-  --text-main: #ffffff;
-  --text-muted: #a0a6be;
-  
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
-  --accent-pink: #ec4899;
-  --accent-spark: #fbbf24;
-  
-  --radius-slot: 5px; /* Explicit requirement: 5px rounded borders */
-  --radius-dock: 16px;
-  --radius-pill: 9999px;
-  
-  --slot-shadow: 0 2px 5px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-bounce: 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --font-family: 'Fredoka', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --bg-canvas: #ffffff;
+    /* Dock / Toolbar Design System */
+    --dock-bg: rgba(26, 28, 38, 0.92);
+    --dock-border: rgba(255, 255, 255, 0.12);
+    --dock-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.2);
+    --text-main: #ffffff;
+    --text-muted: #a0a6be;
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --accent-pink: #ec4899;
+    --accent-spark: #fbbf24;
+    --radius-slot: 5px;
+    /* Explicit requirement: 5px rounded borders */
+    --radius-dock: 16px;
+    --radius-pill: 9999px;
+    --slot-shadow: 0 2px 5px rgba(0, 0, 0, 0.28), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Mobile Safe Area Insets */
+    --sat: env(safe-area-inset-top, 0px);
+    --sab: env(safe-area-inset-bottom, 0px);
+    --sal: env(safe-area-inset-left, 0px);
+    --sar: env(safe-area-inset-right, 0px);
 }
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
 }
-
 [hidden] {
-  display: none !important;
+    display: none !important;
 }
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: #f1f3f7;
-  font-family: var(--font-family);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #f1f3f7;
+    font-family: var(--font-family);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    overscroll-behavior: none;
 }
-
+button {
+    touch-action: manipulation;
+}
 /* ==========================================================================
    Canvas Area
    ========================================================================== */
 .canvas-container {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--bg-canvas);
-  overflow: hidden;
-  cursor: crosshair;
-  z-index: 1;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-canvas);
+    overflow: hidden;
+    cursor: crosshair;
+    z-index: 1;
 }
-
 #drawingCanvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  touch-action: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    touch-action: none;
 }
-
 /* Interactive Brush Cursor Follower */
 .brush-cursor {
-  position: fixed;
-  pointer-events: none;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: 1.5px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.15s ease, transform 0.05s ease-out;
+    position: fixed;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.05s ease-out;
 }
-
 .brush-cursor.active {
-  opacity: 1;
+    opacity: 1;
 }
-
 /* ==========================================================================
    Top Toolbar (Windows Remote Desktop Bar Style)
    ========================================================================== */
 .top-toolbar {
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  height: 44px;
-  padding: 0 14px 0 10px;
-  background: var(--dock-bg);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--dock-border);
-  border-radius: var(--radius-pill);
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: all var(--transition-fast);
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding: 0 14px 0 10px;
+    background: var(--dock-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--dock-border);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all var(--transition-fast);
 }
-
 .top-toolbar:hover {
-  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.45);
 }
-
 .top-toolbar-drag-handle {
-  display: flex;
-  align-items: center;
-  cursor: default;
+    display: flex;
+    align-items: center;
+    cursor: default;
 }
-
 .app-logo {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
-
 .spark-icon {
-  width: 20px;
-  height: 20px;
-  color: var(--accent-spark);
-  fill: var(--accent-spark);
-  filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
-  animation: pulse-spark 2.5s infinite ease-in-out;
+    width: 20px;
+    height: 20px;
+    color: var(--accent-spark);
+    fill: var(--accent-spark);
+    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.6));
+    animation: pulse-spark 2.5s infinite ease-in-out;
 }
-
 @keyframes pulse-spark {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.12) rotate(6deg); }
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.12) rotate(6deg);
+    }
 }
-
 .app-title {
-  font-family: 'Fredoka', cursive, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  background: linear-gradient(135deg, #ffffff 40%, #fbbf24 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  padding-right: 4px;
+    font-family: 'Fredoka', cursive, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    background: linear-gradient(135deg, #ffffff 40%, #fbbf24 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding-right: 4px;
 }
-
 .top-toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
-
 .toolbar-divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.18);
-  margin: 0 2px;
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.18);
+    margin: 0 2px;
 }
-
 .btn-tool {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  height: 32px;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-main);
-  font-family: var(--font-family);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
 }
-
 .btn-tool:hover {
-  background: rgba(255, 255, 255, 0.18);
-  transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
 }
-
 .btn-tool:active {
-  transform: translateY(1px);
+    transform: translateY(1px);
 }
-
 .btn-tool:disabled {
-  opacity: 0.38;
-  cursor: not-allowed;
-  transform: none;
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
 }
-
 .btn-save {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  height: 32px;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff;
-  font-family: var(--font-family);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
-  transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    height: 32px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+    transition: all var(--transition-fast);
 }
-
 .btn-save:hover {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
-  transform: translateY(-1px);
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5);
+    transform: translateY(-1px);
 }
-
 .btn-save:active {
-  transform: translateY(1px);
+    transform: translateY(1px);
 }
-
 /* ==========================================================================
    Left Dock Toolbar (Ubuntu Dock Style)
    ========================================================================== */
 .left-dock {
-  position: fixed;
-  top: 64px;
-  left: 12px;
-  bottom: 12px;
-  width: 66px;
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  background: var(--dock-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--dock-border);
-  border-radius: var(--radius-dock);
-  box-shadow: var(--dock-shadow);
-  padding: 8px 4px;
-  overflow: hidden;
-  transition: width var(--transition-fast), transform var(--transition-fast);
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    bottom: 12px;
+    width: 66px;
+    z-index: 90;
+    display: flex;
+    flex-direction: column;
+    background: var(--dock-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--dock-border);
+    border-radius: var(--radius-dock);
+    box-shadow: var(--dock-shadow);
+    padding: 8px 4px;
+    overflow: hidden;
+    transition: width var(--transition-fast), transform var(--transition-fast);
 }
-
 .dock-scroll-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none; /* Hide default scrollbar */
-  gap: 6px;
-  padding: 2px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    /* Hide default scrollbar */
+    gap: 6px;
+    padding: 2px 0;
 }
-
 .dock-scroll-container::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
-
 .dock-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
-
 .dock-section-title {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  color: var(--text-muted);
-  margin-bottom: 5px;
-  font-weight: 700;
-  text-align: center;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-muted);
+    margin-bottom: 5px;
+    font-weight: 700;
+    text-align: center;
 }
-
 .dock-divider {
-  width: 40px;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.12);
-  margin: 3px 0;
-  flex-shrink: 0;
+    width: 40px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12);
+    margin: 3px 0;
+    flex-shrink: 0;
 }
-
 /* Color Slots Grid */
 .color-slots-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    width: 100%;
 }
-
 /* Explicit requirement: 5px rounded borders with slight shadow so they stand out */
 .color-slot {
-  position: relative;
-  width: 42px;
-  height: 38px;
-  border-radius: var(--radius-slot); /* 5px */
-  box-shadow: var(--slot-shadow);
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: transform var(--transition-bounce), box-shadow var(--transition-fast), border-color var(--transition-fast);
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+    position: relative;
+    width: 42px;
+    height: 38px;
+    border-radius: var(--radius-slot);
+    /* 5px */
+    box-shadow: var(--slot-shadow);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform var(--transition-bounce), box-shadow var(--transition-fast), border-color var(--transition-fast);
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
-
 .color-slot:hover {
-  transform: scale(1.12);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  z-index: 2;
+    transform: scale(1.12);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    z-index: 2;
 }
-
 .color-slot:active {
-  transform: scale(0.96);
+    transform: scale(0.96);
 }
-
 .color-slot.active {
-  transform: scale(1.14);
-  border-color: #ffffff;
-  box-shadow: 0 0 0 2px var(--primary), 0 4px 12px rgba(0, 0, 0, 0.5);
-  z-index: 3;
+    transform: scale(1.14);
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px var(--primary), 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 3;
 }
-
 /* Visual active dot indicator inside slot */
 .color-slot.active::after {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.8);
-  border: 1px solid rgba(0,0,0,0.3);
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
-
 /* White color slot outline so it's clearly visible */
 .color-slot[data-color="#ffffff"],
 .color-slot[data-color="#fff"],
 .color-slot[data-color="#FFFFFF"] {
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
 }
-
 /* Edit pencil badge indicator to hint customizeability */
 .slot-edit-indicator {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 13px;
-  height: 13px;
-  background: #1e1e24;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-size: 8px;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
-  pointer-events: none;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 13px;
+    height: 13px;
+    background: #1e1e24;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 8px;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
 }
-
 .color-slot:hover .slot-edit-indicator,
 .color-slot.active .slot-edit-indicator {
-  opacity: 0.85;
+    opacity: 0.85;
 }
-
 /* ==========================================================================
    Brush Sizes (Photoshop Style Dots)
    ========================================================================== */
 .brush-size-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 4px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 4px 0;
 }
-
 .brush-size-btn {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: transform var(--transition-bounce), background-color var(--transition-fast);
-  outline: none;
+    position: relative;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform var(--transition-bounce), background-color var(--transition-fast);
+    outline: none;
 }
-
 .brush-size-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.08);
 }
-
 .brush-size-btn:active {
-  transform: scale(0.94);
+    transform: scale(0.94);
 }
-
 .brush-dot {
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
-
 .brush-size-btn.active {
-  background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.16);
 }
-
 .brush-size-btn.active::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 2px solid var(--accent-spark);
-  border-radius: 50%;
-  animation: pulse-ring 2s infinite ease-in-out;
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 2px solid var(--accent-spark);
+    border-radius: 50%;
+    animation: pulse-ring 2s infinite ease-in-out;
 }
-
 @keyframes pulse-ring {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
 }
-
 /* ==========================================================================
    Reset Button (Below Brush Selector)
    ========================================================================== */
 .dock-reset {
-  margin-top: auto;
-  padding: 4px 0 2px;
+    margin-top: auto;
+    padding: 4px 0 2px;
 }
-
 .btn-dock-reset {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  width: 48px;
-  height: 44px;
-  background: rgba(239, 68, 68, 0.18);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  border-radius: 10px;
-  color: #fca5a5;
-  cursor: pointer;
-  transition: all var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 48px;
+    height: 44px;
+    background: rgba(239, 68, 68, 0.18);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    border-radius: 10px;
+    color: #fca5a5;
+    cursor: pointer;
+    transition: all var(--transition-fast);
 }
-
 .btn-dock-reset:hover {
-  background: rgba(239, 68, 68, 0.3);
-  border-color: rgba(239, 68, 68, 0.6);
-  color: #ffffff;
-  transform: scale(1.05);
+    background: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #ffffff;
+    transform: scale(1.05);
 }
-
 .btn-dock-reset:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
-
 .reset-text {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
-
 /* ==========================================================================
    Color Picker Popover Flyout
    ========================================================================== */
 .color-popover {
-  position: fixed;
-  z-index: 200;
-  background: rgba(24, 26, 36, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.25);
-  padding: 14px;
-  width: 220px;
-  transform-origin: left center;
-  animation: popover-appear 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    position: fixed;
+    z-index: 200;
+    background: rgba(24, 26, 36, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.25);
+    padding: 14px;
+    width: 220px;
+    transform-origin: left center;
+    animation: popover-appear 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 @keyframes popover-appear {
-  from { opacity: 0; transform: scale(0.92) translateX(-6px); }
-  to { opacity: 1; transform: scale(1) translateX(0); }
+    from {
+        opacity: 0;
+        transform: scale(0.92) translateX(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateX(0);
+    }
 }
-
 .popover-arrow {
-  position: absolute;
-  left: -7px;
-  top: 24px;
-  width: 14px;
-  height: 14px;
-  background: rgba(24, 26, 36, 0.95);
-  border-left: 1px solid rgba(255, 255, 255, 0.16);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  transform: rotate(45deg);
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: rgba(24, 26, 36, 0.95);
+    pointer-events: none;
 }
-
+.color-popover.arrow-left .popover-arrow,
+.color-popover:not(.arrow-bottom) .popover-arrow {
+    left: -7px;
+    top: 24px;
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    transform: rotate(45deg);
+}
+.color-popover.arrow-bottom .popover-arrow {
+    bottom: -7px;
+    left: 50%;
+    top: auto;
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    transform: translateX(-50%) rotate(45deg);
+}
 .popover-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
-
 .popover-title {
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 700;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
 }
-
 .popover-close {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  transition: color var(--transition-fast);
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color var(--transition-fast);
 }
-
 .popover-close:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
-
 .popover-body {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
-
 .native-picker-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background var(--transition-fast);
 }
-
 .native-picker-wrapper:hover {
-  background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.14);
 }
-
 .native-picker-wrapper input[type="color"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-  pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
 }
-
 .native-picker-preview {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  border: 2px solid #ffffff;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 2px solid #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
 }
-
 .native-picker-label {
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
 }
-
 .quick-swatches {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  padding-top: 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
-
 .quick-swatch-item {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  transition: transform var(--transition-fast);
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: transform var(--transition-fast);
 }
-
 .quick-swatch-item:hover {
-  transform: scale(1.15);
-  z-index: 2;
+    transform: scale(1.15);
+    z-index: 2;
 }
-
 /* ==========================================================================
    Toast Notification
    ========================================================================== */
 .toast-message {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 22, 30, 0.92);
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-  font-size: 14px;
-  font-weight: 600;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 1000;
-  animation: toast-in 0.25s ease-out;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20, 22, 30, 0.92);
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    font-weight: 600;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 1000;
+    animation: toast-in 0.25s ease-out;
 }
-
 @keyframes toast-in {
-  from { opacity: 0; transform: translate(-50%, 12px); }
-  to { opacity: 1; transform: translate(-50%, 0); }
+    from {
+        opacity: 0;
+        transform: translate(-50%, 12px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
-
 /* ==========================================================================
    Confirm Dialog
    ========================================================================== */
 .confirm-dialog-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: fade-in 0.15s ease-out;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fade-in 0.15s ease-out;
 }
-
 .confirm-dialog-backdrop[hidden] {
-  display: none !important;
+    display: none !important;
 }
-
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
-
 .confirm-dialog {
-  background: #1e202d;
-  color: #ffffff;
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  padding: 24px;
-  max-width: 360px;
-  width: 100%;
-  text-align: center;
+    background: #1e202d;
+    color: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    padding: 24px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
 }
-
 .dialog-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffffff;
 }
-
 .dialog-text {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 20px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 20px;
 }
-
 .dialog-actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
 }
-
 .btn-cancel {
-  flex: 1;
-  padding: 10px 16px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: none;
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background var(--transition-fast);
+    flex: 1;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition-fast);
 }
-
 .btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.18);
 }
-
 .btn-confirm-clear {
-  flex: 1;
-  padding: 10px 16px;
-  background: #ef4444;
-  color: #ffffff;
-  border: none;
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-  transition: all var(--transition-fast);
+    flex: 1;
+    padding: 10px 16px;
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    transition: all var(--transition-fast);
 }
-
 .btn-confirm-clear:hover {
-  background: #dc2626;
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+    background: #dc2626;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
 }
-
 /* ==========================================================================
-   Mobile / Tablet Responsive Adjustments
+   Mobile Responsive Adjustments (Portrait & Landscape)
    ========================================================================== */
-@media (max-height: 640px) {
-  .left-dock {
-    width: 58px;
-    padding: 6px 2px;
-  }
-  .color-slot {
-    width: 36px;
-    height: 32px;
-    gap: 4px;
-  }
-  .brush-size-btn {
-    width: 36px;
-    height: 36px;
-  }
-  .top-toolbar {
-    height: 38px;
-    top: 6px;
-  }
-  .btn-tool, .btn-save {
-    height: 28px;
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-  .btn-label {
-    display: none; /* Icon only on very short screens */
-  }
+/* --- Mobile Portrait Mode (Dock shifts to bottom thumb-friendly bar) --- */
+@media (max-width: 768px) and (orientation: portrait),
+(max-width: 600px) {
+    .top-toolbar {
+        top: max(8px, var(--sat));
+        height: 40px;
+        padding: 0 10px;
+        max-width: calc(100vw - 16px);
+        gap: 8px;
+    }
+    .app-title {
+        font-size: 13px;
+    }
+    .btn-label {
+        display: none;
+    }
+    .btn-tool {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        justify-content: center;
+    }
+    .btn-save {
+        height: 32px;
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+    .btn-save .btn-label {
+        display: inline;
+    }
+    /* Dock transitions to bottom horizontal floating dock */
+    .left-dock {
+        top: auto;
+        bottom: max(8px, var(--sab));
+        left: max(8px, var(--sal));
+        right: max(8px, var(--sar));
+        width: auto;
+        height: 56px;
+        padding: 4px 8px;
+        border-radius: 16px;
+        flex-direction: row;
+        align-items: center;
+    }
+    .dock-scroll-container {
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        gap: 8px;
+        padding: 0 2px;
+        width: 100%;
+        height: 100%;
+    }
+    .dock-section {
+        flex-direction: row;
+        width: auto;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    .dock-section-title {
+        display: none;
+    }
+    .dock-divider {
+        width: 1px;
+        height: 28px;
+        margin: 0 4px;
+        flex-shrink: 0;
+    }
+    .color-slots-grid {
+        flex-direction: row;
+        gap: 6px;
+        width: auto;
+        flex-shrink: 0;
+    }
+    .color-slot {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+    }
+    .brush-size-group {
+        flex-direction: row;
+        width: auto;
+        gap: 4px;
+        padding: 0;
+        flex-shrink: 0;
+    }
+    .brush-size-btn {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+    }
+    .dock-reset {
+        margin-top: 0;
+        margin-left: auto;
+        padding: 0;
+        flex-shrink: 0;
+    }
+    .btn-dock-reset {
+        width: 36px;
+        height: 34px;
+        border-radius: 8px;
+        padding: 0;
+    }
+    .reset-text {
+        display: none;
+    }
 }
-
-@media (max-width: 480px) {
-  .left-dock {
-    left: 6px;
-    width: 54px;
-  }
-  .color-slot {
-    width: 36px;
-    height: 32px;
-  }
-  .btn-label {
-    display: none;
-  }
-  .app-title {
-    font-size: 13px;
-  }
+/* --- Mobile Landscape Mode (Compact Left Dock & Slim Top Bar) --- */
+@media (orientation: landscape) and (max-height: 560px) {
+    .top-toolbar {
+        top: max(4px, var(--sat));
+        height: 32px;
+        padding: 0 8px;
+        gap: 6px;
+    }
+    .app-title {
+        display: none;
+    }
+    .spark-icon {
+        width: 16px;
+        height: 16px;
+    }
+    .btn-label {
+        display: none;
+    }
+    .btn-tool {
+        width: 28px;
+        height: 26px;
+        padding: 0;
+        justify-content: center;
+    }
+    .btn-save {
+        height: 26px;
+        padding: 2px 8px;
+        font-size: 11px;
+    }
+    .left-dock {
+        top: max(38px, var(--sat));
+        bottom: max(6px, var(--sab));
+        left: max(6px, var(--sal));
+        width: 48px;
+        padding: 4px 2px;
+        border-radius: 12px;
+    }
+    .dock-section-title {
+        display: none;
+    }
+    .dock-divider {
+        width: 28px;
+        margin: 2px 0;
+    }
+    .color-slots-grid {
+        gap: 4px;
+    }
+    .color-slot {
+        width: 32px;
+        height: 24px;
+    }
+    .brush-size-group {
+        gap: 2px;
+        padding: 2px 0;
+    }
+    .brush-size-btn {
+        width: 28px;
+        height: 28px;
+    }
+    .dock-reset {
+        padding: 2px 0 0;
+    }
+    .btn-dock-reset {
+        width: 34px;
+        height: 28px;
+    }
+    .reset-text {
+        display: none;
+    }
 }
