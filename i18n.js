@@ -1,6 +1,6 @@
 /**
  * SparkyDraw i18n & Localization
- * Supports: English (en), Greek (el), Italian (it), Spanish (es), French (fr), German (de)
+ * Supports: English (en), Greek (el), Italian (it), Spanish (es), French (fr), German (de), Arabic (ar)
  */
 
 const I18N = (function () {
@@ -62,6 +62,15 @@ const I18N = (function () {
                 <rect y="13.33" width="60" height="13.33" fill="#dd0000"/>
                 <rect y="26.66" width="60" height="13.33" fill="#ffce00"/>
             </g>
+        </svg>`,
+        ar: `<svg viewBox="0 0 60 40" width="22" height="15" class="flag-svg" aria-hidden="true">
+            <clipPath id="ar-clip"><rect width="60" height="40" rx="3"/></clipPath>
+            <g clip-path="url(#ar-clip)">
+                <rect x="15" y="0" width="45" height="13.33" fill="#00732f"/>
+                <rect x="15" y="13.33" width="45" height="13.34" fill="#ffffff"/>
+                <rect x="15" y="26.67" width="45" height="13.33" fill="#000000"/>
+                <rect x="0" y="0" width="15" height="40" fill="#e0162b"/>
+            </g>
         </svg>`
     };
 
@@ -71,7 +80,8 @@ const I18N = (function () {
         { code: 'it', name: 'Italian', native: 'Italiano' },
         { code: 'es', name: 'Spanish', native: 'Español' },
         { code: 'fr', name: 'French', native: 'Français' },
-        { code: 'de', name: 'German', native: 'Deutsch' }
+        { code: 'de', name: 'German', native: 'Deutsch' },
+        { code: 'ar', name: 'Arabic', native: 'العربية' }
     ];
 
     const TRANSLATIONS = {
@@ -88,7 +98,7 @@ const I18N = (function () {
             fullscreenTitleExit: 'Exit Fullscreen (F)',
             help: 'Help',
             helpTitle: 'About SparkyDraw & Help',
-            savePng: 'Save PNG',
+            savePng: 'Save',
             savePngTitle: 'Save drawing to local PNG image',
             colorsTitle: 'Colors',
             brushTitle: 'Brush',
@@ -108,7 +118,7 @@ const I18N = (function () {
             clearDialogText: 'This will clear your canvas. You can always use Undo if you change your mind!',
             keepDrawing: 'Keep Drawing',
             clearCanvas: 'Clear Canvas',
-            helpIntro: 'SparkyDraw is a simple, delightful drawing app designed for children using convertible laptops, tablets, or desktop computers. It remembers your artwork and settings across visits, exports high-resolution PNG images locally, and runs seamlessly in both portrait and landscape modes!',
+            helpIntro: 'SparkyDraw is a simple, delightful drawing app designed for children (and not only!), compatible with any device and screen format, touch-friendly or not and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally and adapts easily in small or big screen, in both portrait and landscape modes!',
             helpLeftTitle: 'Left Toolbar',
             helpLeftColors: 'Colors: Click any of the 12 color slots to pick your drawing color. Click it again to open the color picker and customize that slot.',
             helpLeftBrush: 'Brush: Click the brush icon to choose your stroke thickness (from fine details to jumbo marker) with live preview.',
@@ -117,7 +127,7 @@ const I18N = (function () {
             helpTopUndo: 'Undo & Redo: Instantly undo (Ctrl+Z) or redo (Ctrl+Y) your strokes.',
             helpTopClear: 'Clear: Wipe the canvas clean to start fresh.',
             helpTopFullscreen: 'Fullscreen: Hide all browser borders and distractions for full-screen drawing (F key).',
-            helpTopSave: 'Save PNG: Save your drawing directly to your device as SparkyDraw_YYYYMMDD_HHmmss.png.',
+            helpTopSave: 'Save: Save your drawing directly to your device as SparkyDraw_YYYYMMDD_HHmmss.png.',
             gotIt: 'Got it!',
             language: 'Language',
             toastSaved: 'Saved as {filename}! ✨',
@@ -162,7 +172,7 @@ const I18N = (function () {
             clearDialogText: 'Αυτό θα καθαρίσει τον καμβά σας. Μπορείτε πάντα να χρησιμοποιήσετε την Αναίρεση αν αλλάξετε γνώμη!',
             keepDrawing: 'Συνέχεια ζωγραφικής',
             clearCanvas: 'Καθαρισμός καμβά',
-            helpIntro: 'Το SparkyDraw είναι μια απλή και διασκεδαστική εφαρμογή ζωγραφικής για παιδιά σε φορητούς υπολογιστές, τάμπλετ ή υπολογιστές. Θυμάται τη ζωγραφιά και τις ρυθμίσεις σας, αποθηκεύει εικόνες PNG στη συσκευή σας και λειτουργεί άψογα σε οριζόντιο και κάθετο προσανατολισμό!',
+            helpIntro: 'Το SparkyDraw είναι μια απλή, απολαυστική εφαρμογή ζωγραφικής σχεδιασμένη για παιδιά (και όχι μόνο!), συμβατή με κάθε συσκευή και τύπο οθόνης, με υποστήριξη αφής ή μη και σε οποιονδήποτε προσανατολισμό. Θυμάται τα έργα και τις ρυθμίσεις σας μεταξύ των επισκέψεων, εξάγει εικόνες PNG υψηλής ανάλυσης τοπικά και προσαρμόζεται εύκολα σε μικρές ή μεγάλες οθόνες, τόσο σε κάθετη όσο και σε οριζόντια προβολή!',
             helpLeftTitle: 'Αριστερή γραμμή εργαλείων',
             helpLeftColors: 'Χρώματα: Κάντε κλικ σε ένα από τα 12 χρώματα για να ζωγραφίσετε. Κάντε κλικ ξανά για να επιλέξετε άλλο χρώμα.',
             helpLeftBrush: 'Πινέλο: Κάντε κλικ στο εικονίδιο πινέλου για να επιλέξετε πάχος γραμμής με ζωντανή προεπισκόπηση.',
@@ -171,7 +181,7 @@ const I18N = (function () {
             helpTopUndo: 'Αναίρεση & Επανάληψη: Διορθώστε γρήγορα (Ctrl+Z / Ctrl+Y) κάθε λάθος.',
             helpTopClear: 'Καθαρισμός: Καθαρίστε τον καμβά για να ξεκινήσετε από την αρχή.',
             helpTopFullscreen: 'Πλήρης οθόνη: Αποκρύψτε τα περιθώρια του περιηγητή για να ζωγραφίζετε άνετα (πλήκτρο F).',
-            helpTopSave: 'Αποθήκευση PNG: Αποθηκεύστε τη ζωγραφιά στη συσκευή σας ως SparkyDraw_YYYYMMDD_HHmmss.png.',
+            helpTopSave: 'Αποθήκευση: Αποθηκεύστε τη ζωγραφιά στη συσκευή σας ως SparkyDraw_YYYYMMDD_HHmmss.png.',
             gotIt: 'Κατάλαβα!',
             language: 'Γλώσσα',
             toastSaved: 'Αποθηκεύτηκε ως {filename}! ✨',
@@ -196,7 +206,7 @@ const I18N = (function () {
             fullscreenTitleExit: 'Esci da schermo intero (F)',
             help: 'Aiuto',
             helpTitle: 'Informazioni su SparkyDraw & Aiuto',
-            savePng: 'Salva PNG',
+            savePng: 'Salva',
             savePngTitle: 'Salva il disegno in un file PNG locale',
             colorsTitle: 'Colori',
             brushTitle: 'Pennello',
@@ -216,7 +226,7 @@ const I18N = (function () {
             clearDialogText: 'Questo cancellerà la tela. Puoi sempre usare Annulla se cambi idea!',
             keepDrawing: 'Continua a disegnare',
             clearCanvas: 'Cancella tela',
-            helpIntro: 'SparkyDraw è un\'applicazione di disegno semplice e divertente per bambini su tablet, computer o smartphone. Ricorda i tuoi disegni e impostazioni tra le visite, salva immagini PNG ad alta risoluzione e funziona perfettamente sia in verticale che in orizzontale!',
+            helpIntro: 'SparkyDraw è un\'applicazione di disegno semplice e deliziosa progettata per bambini (e non solo!), compatibile con qualsiasi dispositivo e formato di schermo, touch o meno e in qualsiasi orientamento. Ricorda i tuoi disegni e impostazioni tra le visite, esporta localmente immagini PNG ad alta risoluzione e si adatta facilmente a schermi piccoli o grandi, sia in modalità verticale che orizzontale!',
             helpLeftTitle: 'Barra laterale',
             helpLeftColors: 'Colori: Clicca su uno dei 12 colori per disegnare. Clicca di nuovo per personalizzare lo slot.',
             helpLeftBrush: 'Pennello: Clicca sull\'icona del pennello per scegliere lo spessore con anteprima in tempo reale.',
@@ -225,7 +235,7 @@ const I18N = (function () {
             helpTopUndo: 'Annulla & Ripeti: Correggi rapidamente (Ctrl+Z / Ctrl+Y) qualsiasi tratto.',
             helpTopClear: 'Cancella: Pulisci la tela per ricominciare da capo.',
             helpTopFullscreen: 'Schermo intero: Nascondi i bordi del browser per concentrarti sul disegno (tasto F).',
-            helpTopSave: 'Salva PNG: Salva il disegno sul dispositivo come SparkyDraw_YYYYMMDD_HHmmss.png.',
+            helpTopSave: 'Salva: Salva il tuo disegno direttamente sul tuo dispositivo come SparkyDraw_YYYYMMDD_HHmmss.png.',
             gotIt: 'Ho capito!',
             language: 'Lingua',
             toastSaved: 'Salvato come {filename}! ✨',
@@ -250,7 +260,7 @@ const I18N = (function () {
             fullscreenTitleExit: 'Salir de pantalla completa (F)',
             help: 'Ayuda',
             helpTitle: 'Acerca de SparkyDraw & Ayuda',
-            savePng: 'Guardar PNG',
+            savePng: 'Guardar',
             savePngTitle: 'Guardar dibujo en una imagen PNG local',
             colorsTitle: 'Colores',
             brushTitle: 'Pincel',
@@ -270,7 +280,7 @@ const I18N = (function () {
             clearDialogText: 'Esto borrará tu lienzo. ¡Siempre puedes usar Deshacer si cambias de opinión!',
             keepDrawing: 'Seguir dibujando',
             clearCanvas: 'Borrar lienzo',
-            helpIntro: 'SparkyDraw es una aplicación de dibujo simple y divertida diseñada para niños en portátiles, tabletas o computadoras. ¡Recuerda tus dibujos y ajustes entre visitas, guarda imágenes PNG de alta resolución y funciona sin problemas en modo vertical y horizontal!',
+            helpIntro: 'SparkyDraw es una aplicación de dibujo simple y encantadora diseñada para niños (¡y no solo para ellos!), compatible con cualquier dispositivo y formato de pantalla, táctil o no y en cualquier orientación. ¡Recuerda tus dibujos y ajustes entre visitas, exporta imágenes PNG de alta resolución localmente y se adapta fácilmente a pantallas pequeñas o grandes, tanto en modo vertical como horizontal!',
             helpLeftTitle: 'Barra lateral',
             helpLeftColors: 'Colores: Haz clic en cualquiera de los 12 colores para pintar. Haz clic de nuevo para personalizar esa casilla.',
             helpLeftBrush: 'Pincel: Haz clic en el icono del pincel para elegir el grosor con vista previa en vivo.',
@@ -279,7 +289,7 @@ const I18N = (function () {
             helpTopUndo: 'Deshacer & Rehacer: Corrige al instante (Ctrl+Z / Ctrl+Y) cualquier error.',
             helpTopClear: 'Borrar: Limpia el lienzo para empezar de nuevo.',
             helpTopFullscreen: 'Pantalla completa: Oculta los bordes del navegador para concentrarte en dibujar (tecla F).',
-            helpTopSave: 'Guardar PNG: Guarda tu dibujo en tu dispositivo como SparkyDraw_YYYYMMDD_HHmmss.png.',
+            helpTopSave: 'Guardar: Guarda tu dibujo en tu dispositivo como SparkyDraw_YYYYMMDD_HHmmss.png.',
             gotIt: '¡Entendido!',
             language: 'Idioma',
             toastSaved: '¡Guardado como {filename}! ✨',
@@ -324,7 +334,7 @@ const I18N = (function () {
             clearDialogText: 'Cela effacera votre toile. Vous pourrez toujours utiliser Annuler en cas d\'erreur !',
             keepDrawing: 'Continuer à dessiner',
             clearCanvas: 'Effacer la toile',
-            helpIntro: 'SparkyDraw est une application de dessin simple et ludique pour les enfants sur tablettes, ordinateurs ou téléphones. Elle conserve vos dessins et réglages d\'une visite à l\'autre, exporte des images PNG haute résolution et s\'adapte au mode portrait ou paysage !',
+            helpIntro: 'SparkyDraw est une application de dessin simple et réjouissante conçue pour les enfants (et pas seulement !), compatible avec tous les appareils et formats d\'écran, tactiles ou non et dans toutes les orientations. Elle mémorise vos créations et réglages d\'une visite à l\'autre, exporte localement des images PNG haute résolution et s\'adapte facilement aux petits comme aux grands écrans, en mode portrait comme paysage !',
             helpLeftTitle: 'Barre latérale',
             helpLeftColors: 'Couleurs : Cliquez sur l\'une des 12 couleurs pour dessiner. Cliquez à nouveau pour la personnaliser.',
             helpLeftBrush: 'Pinceau : Cliquez sur l\'icône du pinceau pour choisir l\'épaisseur avec un aperçu en direct.',
@@ -358,7 +368,7 @@ const I18N = (function () {
             fullscreenTitleExit: 'Vollbild beenden (F)',
             help: 'Hilfe',
             helpTitle: 'Über SparkyDraw & Hilfe',
-            savePng: 'PNG Speichern',
+            savePng: 'Speichern',
             savePngTitle: 'Zeichnung lokal als PNG-Bild speichern',
             colorsTitle: 'Farben',
             brushTitle: 'Pinsel',
@@ -378,7 +388,7 @@ const I18N = (function () {
             clearDialogText: 'Dadurch wird die Leinwand geleert. Du kannst es jederzeit mit Rückgängig wiederherstellen!',
             keepDrawing: 'Weiterzeichnen',
             clearCanvas: 'Leinwand leeren',
-            helpIntro: 'SparkyDraw ist eine einfache, fröhliche Zeichen-App für Kinder auf Tablets, Laptops oder PCs. Sie merkt sich deine Kunstwerke und Einstellungen, speichert hochauflösende PNG-Bilder und passt sich perfekt an Hoch- und Querformat an!',
+            helpIntro: 'SparkyDraw ist eine einfache, tolle Zeichen-App für Kinder (und nicht nur für sie!), kompatibel mit jedem Gerät und Bildschirmformat, mit Touchscreen oder Maus und in jeder Ausrichtung. Sie merkt sich deine Kunstwerke und Einstellungen über Besuche hinweg, exportiert hochauflösende PNG-Bilder lokal und passt sich mühelos an kleine oder große Bildschirme an, sowohl im Hoch- als auch im Querformat!',
             helpLeftTitle: 'Linke Symbolleiste',
             helpLeftColors: 'Farben: Klicke auf eine der 12 Farben zum Malen. Klicke erneut, um den Farbton anzupassen.',
             helpLeftBrush: 'Pinsel: Klicke auf das Pinselsymbol, um die Strichstärke mit Live-Vorschau auszuwählen.',
@@ -387,7 +397,7 @@ const I18N = (function () {
             helpTopUndo: 'Rückgängig & Wiederholen: Korrigiere schnell (Ctrl+Z / Ctrl+Y) jeden Strich.',
             helpTopClear: 'Löschen: Leere die Leinwand, um frisch anzufangen.',
             helpTopFullscreen: 'Vollbild: Verberge störende Browserleisten für ungestörtes Malen (Taste F).',
-            helpTopSave: 'PNG Speichern: Speichere dein Bild als SparkyDraw_YYYYMMDD_HHmmss.png auf deinem Gerät.',
+            helpTopSave: 'Speichern: Speichere dein Bild als SparkyDraw_YYYYMMDD_HHmmss.png auf deinem Gerät.',
             gotIt: 'Verstanden!',
             language: 'Sprache',
             toastSaved: 'Gespeichert als {filename}! ✨',
@@ -398,6 +408,60 @@ const I18N = (function () {
             toastBrushSize: 'Pinselgröße auf {size} gesetzt',
             toastFullscreenErr: 'Vollbild nicht erlaubt: {err}',
             toastLangChanged: 'Sprache geändert auf {lang}'
+        },
+        ar: {
+            undo: 'تراجع',
+            undoTitle: 'تراجع عن آخر خطوة (Ctrl+Z)',
+            redo: 'إعادة',
+            redoTitle: 'إعادة الخطوة (Ctrl+Y)',
+            clear: 'مسح',
+            clearTitle: 'مسح لوحة الرسم',
+            fullscreen: 'ملء الشاشة',
+            fullscreenExit: 'خروج',
+            fullscreenTitleEnter: 'تبديل ملء الشاشة (F)',
+            fullscreenTitleExit: 'الخروج من ملء الشاشة (F)',
+            help: 'مساعدة',
+            helpTitle: 'حول SparkyDraw والمساعدة',
+            savePng: 'حفظ',
+            savePngTitle: 'حفظ الرسم كصورة PNG على جهازك',
+            colorsTitle: 'الألوان',
+            brushTitle: 'الفرشاة',
+            brushSlotTitle: 'اختيار حجم الفرشاة: {size} بكسل',
+            reset: 'إعادة ضبط',
+            resetTitle: 'استعادة الألوان وحجم الفرشاة الافتراضي',
+            changeColor: 'تغيير اللون',
+            pickAnyColor: 'اختر أي لون',
+            brushSizeHeading: 'حجم الفرشاة',
+            sizeLabel: 'الحجم:',
+            brushFine: 'دقيق (6 بكسل)',
+            brushSmall: 'صغير (12 بكسل)',
+            brushMedium: 'افتراضي / عريض (20 بكسل)',
+            brushLarge: 'عريض جداً (34 بكسل)',
+            brushJumbo: 'ضخم (52 بكسل)',
+            clearDialogTitle: 'بدء رسم جديد؟',
+            clearDialogText: 'سيؤدي هذا إلى مسح لوحة الرسم. يمكنك دائماً استخدام التراجع إذا غيرت رأيك!',
+            keepDrawing: 'متابعة الرسم',
+            clearCanvas: 'مسح اللوحة',
+            helpIntro: 'تطبيق SparkyDraw هو تطبيق رسم بسيط ورائع مصمم للأطفال (وليس لهم فقط!)، متوافق مع أي جهاز وتنسيق شاشة، سواء كانت تعمل باللمس أم لا وفي أي اتجاه. يتذكر أعمالك الفنية وإعداداتك بين الزيارات، ويصدّر صور PNG عالية الدقة محلياً، ويتكيف بسهولة مع الشاشات الصغيرة أو الكبيرة، في كلا الوضعين الرأسي والأفقي!',
+            helpLeftTitle: 'شريط الأدوات الجانبي',
+            helpLeftColors: 'الألوان: انقر فوق أي من خانات الألوان الـ 12 لاختيار لون الرسم. انقر فوقها مرة أخرى لفتح منتقي الألوان وتخصيصها.',
+            helpLeftBrush: 'الفرشاة: انقر فوق أيقونة الفرشاة لاختيار سمك الخط (من التفاصيل الدقيقة إلى القلم العريض) مع معاينة فورية.',
+            helpLeftReset: 'إعادة الضبط: انقر فوق زر إعادة الضبط الأحمر لاستعادة الألوان وحجم الفرشاة الأصلي.',
+            helpTopTitle: 'شريط الأدوات العلوي',
+            helpTopUndo: 'تراجع وإعادة: التراجع الفوري (Ctrl+Z) أو الإعادة (Ctrl+Y) لخطوات الرسم.',
+            helpTopClear: 'مسح: مسح لوحة الرسم بالكامل للبدء من جديد.',
+            helpTopFullscreen: 'ملء الشاشة: إخفاء إطارات المتصفح لتجربة رسم خالية من التشتيت (زر F).',
+            helpTopSave: 'حفظ: احفظ رسمتك مباشرة على جهازك بتنسيق PNG باسم SparkyDraw_YYYYMMDD_HHmmss.png.',
+            gotIt: 'فهمت!',
+            language: 'اللغة',
+            toastSaved: 'تم الحفظ باسم {filename}! ✨',
+            toastUndo: 'تراجع',
+            toastRedo: 'إعادة',
+            toastCleared: 'تم مسح اللوحة!',
+            toastReset: 'تمت استعادة الألوان وحجم الفرشاة الافتراضي!',
+            toastBrushSize: 'تم ضبط حجم الفرشاة على {size}',
+            toastFullscreenErr: 'وضع ملء الشاشة غير متاح: {err}',
+            toastLangChanged: 'تم تغيير اللغة إلى {lang}'
         }
     };
 

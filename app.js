@@ -71,7 +71,6 @@
     const btnCloseHelp = document.getElementById('btnCloseHelp');
     const btnGotIt = document.getElementById('btnGotIt');
     const btnBrushSlot = document.getElementById('btnBrushSlot');
-    const brushIndicatorDot = document.getElementById('brushIndicatorDot');
     const brushPopover = document.getElementById('brushPopover');
     const btnCloseBrushPopover = document.getElementById('btnCloseBrushPopover');
     const brushPreviewCircle = document.getElementById('brushPreviewCircle');
@@ -270,9 +269,6 @@
         btnBrushSlot.title = sizeTitle;
         btnBrushSlot.setAttribute('aria-label', sizeTitle);
         btnBrushSlot.classList.toggle('active', brushPopover && !brushPopover.hidden);
-        if (brushIndicatorDot) {
-            brushIndicatorDot.style.backgroundColor = colors[activeColorIndex];
-        }
     }
 
     function openBrushPopover() {
@@ -291,8 +287,8 @@
         brushPopover.hidden = false;
         btnBrushSlot.classList.add('active');
 
-        const popoverWidth = 230;
-        const popoverHeight = brushPopover.offsetHeight || 150;
+        const popoverWidth = brushPopover.offsetWidth || 256;
+        const popoverHeight = brushPopover.offsetHeight || 160;
         const arrow = brushPopover.querySelector('.popover-arrow');
 
         if (isBottomDock) {

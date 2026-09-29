@@ -18,19 +18,20 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero frameworks or b
 - **Ubuntu-Style Left Dock**:
   - **12 Customizable Color Slots**: Rendered with **5px rounded borders** and subtle drop shadows.
   - **Color Picker Popover**: Click any color slot to select it and open the color picker flyout (using modern HTML `<input type="color">` and quick swatches) to customize that slot.
-  - **Compact Brush Slot Button**: Uses a crisp SVG paintbrush icon with an indicator dot showing current color. Clicking it opens a dedicated **Brush Size Popover** with Photoshop-style dots (Fine 6px to Jumbo 52px) and a real-time stroke thickness preview.
+  - **Compact Brush Slot Button**: Uses a crisp SVG paintbrush icon. Clicking it opens a dedicated **Brush Size Popover** with roomy, touch-padded Photoshop-style dots (Fine 6px to Jumbo 52px) and a real-time stroke thickness preview.
   - **Reset UI Button**: Located below the brush selector to quickly restore default palette colors and brush size.
 
 - **Windows RDP-Style Top Toolbar**:
   - Sleek, compact floating pill at the top of the screen.
   - **Fullscreen Toggle**: Uses the modern standard Fullscreen Web API (`requestFullscreen` / `exitFullscreen`) to hide all browser chrome and provide an immersive full-screen canvas (shortcut `F`).
-  - **Save PNG Button**: Downloads the drawing directly to your local device with timestamped filenames formatted as `SparkyDraw_YYYYMMDD_HHmmss.png`.
+  - **Save Button**: Downloads the drawing directly to your local device as a high-resolution PNG image with timestamped filenames formatted as `SparkyDraw_YYYYMMDD_HHmmss.png`.
   - **Undo & Redo**: Easy error recovery for young artists (plus `Ctrl+Z` / `Ctrl+Y` keyboard shortcuts).
   - **Clear Canvas**: With a gentle confirmation dialog to prevent accidental wipes.
   - **Help & Info Dialog**: Interactive modal with app overview, tips on how the left & top toolbars work, and version metadata (`v1.0 • 2026.09.29`).
 
 - **Multi-Lingual Support (i18n)**:
-  - **6 Languages**: English (`en`), Greek (`el`), Italian (`it`), Spanish (`es`), French (`fr`), and German (`de`).
+  - **7 Languages**: English (`en`), Greek (`el`), Italian (`it`), Spanish (`es`), French (`fr`), German (`de`), and Arabic (`ar`).
+  - **RTL Support**: Scoped Right-To-Left (RTL) reading flow specifically for the Help & Info modal when Arabic is selected.
   - **Auto-Detection**: Automatically detects the browser/OS language on page load, with default fallback to English.
   - **Language Selector Dropdown**: Top toolbar button with crisp vector SVG flags and language names with native labels.
   - **Persistent Language Choice**: Saved to `localStorage` (`sparkydraw_lang_v1`).
