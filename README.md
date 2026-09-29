@@ -27,6 +27,7 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero frameworks or b
   - **Save PNG Button**: Downloads the drawing directly to your local device with timestamped filenames formatted as `SparkyDraw_YYYYMMDD_HHmmss.png`.
   - **Undo & Redo**: Easy error recovery for young artists (plus `Ctrl+Z` / `Ctrl+Y` keyboard shortcuts).
   - **Clear Canvas**: With a gentle confirmation dialog to prevent accidental wipes.
+  - **Help & Info Dialog**: Interactive modal with app overview, tips on how the left & top toolbars work, and version metadata (`v1.0 • 2026.09.29`).
 
 - **Mobile & Tablet Friendly**:
   - **Portrait Mode**: Dock automatically transitions into a thumb-friendly horizontal dock at the bottom of the screen with touch scrolling and popovers opening upwards.

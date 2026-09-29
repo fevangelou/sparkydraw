@@ -66,6 +66,10 @@
     const btnRedo = document.getElementById('btnRedo');
     const btnClear = document.getElementById('btnClear');
     const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnHelp = document.getElementById('btnHelp');
+    const helpDialog = document.getElementById('helpDialog');
+    const btnCloseHelp = document.getElementById('btnCloseHelp');
+    const btnGotIt = document.getElementById('btnGotIt');
     const btnBrushSlot = document.getElementById('btnBrushSlot');
     const brushIndicatorDot = document.getElementById('brushIndicatorDot');
     const brushPopover = document.getElementById('brushPopover');
@@ -923,6 +927,31 @@
             }
         });
 
+        // Help / About Dialog
+        if (btnHelp && helpDialog) {
+            btnHelp.addEventListener('click', () => {
+                closeAllPopovers();
+                helpDialog.hidden = false;
+            });
+        }
+        if (btnCloseHelp) {
+            btnCloseHelp.addEventListener('click', () => {
+                helpDialog.hidden = true;
+            });
+        }
+        if (btnGotIt) {
+            btnGotIt.addEventListener('click', () => {
+                helpDialog.hidden = true;
+            });
+        }
+        if (helpDialog) {
+            helpDialog.addEventListener('click', (e) => {
+                if (e.target === helpDialog) {
+                    helpDialog.hidden = true;
+                }
+            });
+        }
+
         // Keyboard Shortcuts (Ctrl+Z, Ctrl+Y, Ctrl+S)
         window.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
@@ -942,6 +971,7 @@
             } else if (e.key === 'Escape') {
                 closeAllPopovers();
                 clearDialog.hidden = true;
+                if (helpDialog) helpDialog.hidden = true;
             } else if (e.key === 'f' || e.key === 'F') {
                 if (!e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
                     e.preventDefault();
