@@ -118,7 +118,7 @@ const I18N = (function () {
             clearDialogText: 'This will clear your canvas. You can always use Undo if you change your mind!',
             keepDrawing: 'Keep Drawing',
             clearCanvas: 'Clear Canvas',
-            helpIntro: 'SparkyDraw is a simple, delightful drawing app designed for children (and not only!), compatible with any device and screen format, touch-friendly or not and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally and adapts easily in small or big screen, in both portrait and landscape modes!',
+            helpIntro: 'SparkyDraw is a simple, delightful drawing app designed for children (and not only!), compatible with any device and screen format (touch, pen/pointer & mouse friendly) and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally and adapts easily in small or big screen, in both portrait and landscape modes!',
             helpLeftTitle: 'Left Toolbar',
             helpLeftColors: 'Colors: Click any of the 12 color slots to pick your drawing color. Click it again to open the color picker and customize that slot.',
             helpLeftBrush: 'Brush: Click the brush icon to choose your stroke thickness (from fine details to jumbo marker) with live preview.',

@@ -672,17 +672,114 @@
         ctx.restore();
 
         if (tempCanvas) {
-            // Restore cached drawing seamlessly without clipping or distorting on window resize / orientation change
-            ctx.save();
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.drawImage(tempCanvas, 0, 0);
-            ctx.restore();
+            // Restore cached drawing, automatically fitting to viewing area if it would go off-canvas
+            restoreCachedCanvas(tempCanvas);
         } else {
             // Initial page load or browser refresh: restore from persistent drawing memory
             restoreSavedCanvas();
         }
 
         isCanvasInitialized = true;
+    }
+
+    function getDrawingBoundingBox(srcCanvas) {
+        const sCtx = srcCanvas.getContext('2d', { willReadFrequently: true });
+        const w = srcCanvas.width;
+        const h = srcCanvas.height;
+        if (w <= 0 || h <= 0) return null;
+
+        let imgData;
+        try {
+            imgData = sCtx.getImageData(0, 0, w, h);
+        } catch (e) {
+            return null;
+        }
+
+        const data32 = new Uint32Array(imgData.data.buffer);
+        const step = 4; // Sample every 4th pixel for fast execution (~2-8ms)
+        let minX = w, minY = h, maxX = -1, maxY = -1;
+        let hasStrokes = false;
+
+        for (let y = 0; y < h; y += step) {
+            const row = y * w;
+            for (let x = 0; x < w; x += step) {
+                const pixel = data32[row + x];
+                const r = pixel & 0xFF;
+                const g = (pixel >> 8) & 0xFF;
+                const b = (pixel >> 16) & 0xFF;
+                const a = (pixel >> 24) & 0xFF;
+                // Identify non-white, opaque drawing pixels
+                if (a > 20 && (r < 250 || g < 250 || b < 250)) {
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                    if (y < minY) minY = y;
+                    if (y > maxY) maxY = y;
+                    hasStrokes = true;
+                }
+            }
+        }
+
+        if (!hasStrokes) return null;
+
+        // Add padding around strokes
+        const pad = Math.round(12 * (window.devicePixelRatio || 1));
+        minX = Math.max(0, minX - pad);
+        minY = Math.max(0, minY - pad);
+        maxX = Math.min(w, maxX + pad + step);
+        maxY = Math.min(h, maxY + pad + step);
+
+        return {
+            x: minX,
+            y: minY,
+            width: Math.max(1, maxX - minX),
+            height: Math.max(1, maxY - minY)
+        };
+    }
+
+    function restoreCachedCanvas(tempCanvas) {
+        const newW = canvas.width;
+        const newH = canvas.height;
+        const bbox = getDrawingBoundingBox(tempCanvas);
+
+        if (!bbox) {
+            // Blank canvas: nothing to scale or adjust
+            return;
+        }
+
+        // Check if drawing would go partially off-canvas in the new orientation or viewport size
+        const isClipped = (bbox.x + bbox.width > newW) || (bbox.y + bbox.height > newH);
+
+        ctx.save();
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        if (isClipped) {
+            // Scale and center drawing so it fits completely within the new viewing area
+            const pad = Math.round(20 * (window.devicePixelRatio || 1));
+            const availW = Math.max(10, newW - pad * 2);
+            const availH = Math.max(10, newH - pad * 2);
+            const scale = Math.min(availW / bbox.width, availH / bbox.height);
+            const drawW = bbox.width * scale;
+            const drawH = bbox.height * scale;
+            const destX = (newW - drawW) / 2;
+            const destY = (newH - drawH) / 2;
+
+            ctx.drawImage(
+                tempCanvas,
+                bbox.x, bbox.y, bbox.width, bbox.height,
+                destX, destY, drawW, drawH
+            );
+        } else {
+            // Entire drawing already fits without clipping; preserve 1:1 position
+            ctx.drawImage(tempCanvas, 0, 0);
+        }
+
+        ctx.restore();
+
+        // Update undo stack and persistent storage with the adjusted artwork
+        saveCanvasSnapshot();
+        persistCanvas();
     }
 
     function clearCanvasInternal(recordUndo = true) {

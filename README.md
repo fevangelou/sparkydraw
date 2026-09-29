@@ -2,7 +2,7 @@
 
 > **Live Web App:** [https://sparkydraw.app](https://sparkydraw.app)
 
-SparkyDraw is a simple, delightful drawing app designed for children (and not only!), compatible with any device and screen format, touch-friendly or not, and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally, and adapts easily to small or big screens, in both portrait and landscape modes!
+SparkyDraw is a simple, delightful drawing app designed for children (and not only!), compatible with any device and screen format (touch, pen/pointer & mouse friendly) and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally and adapts easily in small or big screen, in both portrait and landscape modes!
 
 Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero external frameworks, libraries, or build tools required.
 
@@ -16,7 +16,7 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero external framew
     - **High-DPI / Retina Ready**: Automatically scales with `window.devicePixelRatio` for razor-sharp rendering on modern displays.
     - **Touch-Action Optimization**: Prevents accidental zooming, pinch gestures, or page scrolling while drawing.
     - **Dynamic Brush Cursor**: Interactive cursor displaying real-time stroke thickness and active color.
-    - **Orientation Preservation**: Safely preserves the canvas artwork in an offscreen buffer when rotating between portrait and landscape.
+    - **Intelligent Orientation Auto-Fit**: When rotating between portrait and landscape (or resizing screens), the app automatically scans the artwork bounds; if strokes would overflow the new viewport, it scales and centers the drawing seamlessly so no artwork is ever clipped off-canvas.
 
 - **Adaptive Colors & Brush Toolbar**:
     - **12 Customizable Color Slots**: Rendered with rounded borders, active glow indicators, and subtle drop shadows.
@@ -53,13 +53,13 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero external framew
 
 ## ⌨️ Keyboard Shortcuts
 
-| Shortcut | Action |
-| :--- | :--- |
-| `Ctrl + Z` / `Cmd + Z` | Undo last stroke |
-| `Ctrl + Y` / `Cmd + Y` or `Ctrl + Shift + Z` | Redo stroke |
-| `Ctrl + S` / `Cmd + S` | Save image to local PNG |
-| `F` | Toggle Fullscreen mode |
-| `Esc` | Close open popovers or dialogs |
+| Shortcut                                     | Action                         |
+| :------------------------------------------- | :----------------------------- |
+| `Ctrl + Z` / `Cmd + Z`                       | Undo last stroke               |
+| `Ctrl + Y` / `Cmd + Y` or `Ctrl + Shift + Z` | Redo stroke                    |
+| `Ctrl + S` / `Cmd + S`                       | Save image to local PNG        |
+| `F`                                          | Toggle Fullscreen mode         |
+| `Esc`                                        | Close open popovers or dialogs |
 
 ---
 
