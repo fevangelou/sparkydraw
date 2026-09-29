@@ -388,7 +388,8 @@ button {
     position: relative;
     width: 42px;
     height: 38px;
-    border-radius: var(--radius-slot); /* 5px rounded borders */
+    border-radius: var(--radius-slot);
+    /* 5px rounded borders */
     box-shadow: var(--slot-shadow);
     border: 2px solid rgba(255, 255, 255, 0.16);
     background: rgba(255, 255, 255, 0.08);
@@ -433,7 +434,6 @@ button {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.4);
 }
-
 /* ==========================================================================
    Brush Sizes Popover
    ========================================================================== */
@@ -490,7 +490,6 @@ button {
     border-radius: 6px;
     animation: pulse-ring 2s infinite ease-in-out;
 }
-
 /* Live brush size preview box */
 .brush-size-preview-box {
     display: flex;
@@ -911,7 +910,6 @@ button {
     background: #dc2626;
     box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
 }
-
 /* ==========================================================================
    Help / About Modal
    ========================================================================== */
@@ -1005,7 +1003,9 @@ button {
 .help-list strong {
     color: #ffffff;
 }
-.help-list kbd, .help-intro code, .help-list code {
+.help-list kbd,
+.help-intro code,
+.help-list code {
     background: rgba(255, 255, 255, 0.12);
     padding: 2px 6px;
     border-radius: 4px;

@@ -431,7 +431,7 @@ const I18N = (function () {
             currentLang = code;
             try {
                 localStorage.setItem(STORAGE_KEY, code);
-            } catch (e) {}
+            } catch (e) { }
         }
     }
 
