@@ -1394,6 +1394,24 @@
             clearTimeout(persistTimer);
             saveCanvasToStorage();
         });
+
+        // Hide initial splash screen smoothly once canvas & UI are ready
+        const splash = document.getElementById('appSplash');
+        if (splash) {
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    splash.classList.add('fade-out');
+                    setTimeout(() => splash.remove(), 400);
+                }, 200);
+            });
+        }
+    }
+
+    // Register PWA Service Worker for offline support
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
     }
 
     // Run on DOM ready

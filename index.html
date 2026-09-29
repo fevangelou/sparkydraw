@@ -10,15 +10,38 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>SparkyDraw - Fun & Easy Drawing for Kids</title>
     <meta name="description" content="SparkyDraw is a simple, kid-friendly drawing web app designed for tablets and touch screens with custom color slots and brush sizes.">
+    <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="apple-touch-icon" href="favicon.svg">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="apple-touch-startup-image" href="icons/icon-full-logo-512.png">
+    <meta name="apple-mobile-web-app-title" content="SparkyDraw">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="app.css?t=20260929_1512">
+    <link rel="stylesheet" href="app.css?t=20260929_1524">
 </head>
 
 <body>
+    <!-- App Splash Screen (Full Logo) -->
+    <div class="app-splash" id="appSplash" aria-hidden="true">
+        <div class="splash-content">
+            <svg class="splash-star" viewBox="0 0 24 24" width="72" height="72">
+                <defs>
+                    <linearGradient id="splashSparkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fef08a" />
+                        <stop offset="45%" stop-color="#fbbf24" />
+                        <stop offset="100%" stop-color="#f59e0b" />
+                    </linearGradient>
+                    <filter id="splashGlow" x="-30%" y="-30%" width="160%" height="160%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#fbbf24" flood-opacity="0.6" />
+                        <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="#000" flood-opacity="0.4" />
+                    </filter>
+                </defs>
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#splashSparkGrad)" stroke="#f59e0b" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" filter="url(#splashGlow)" />
+            </svg>
+            <div class="splash-title">SparkyDraw</div>
+        </div>
+    </div>
     <!-- Top Toolbar -->
     <header class="top-toolbar" id="topToolbar" role="toolbar" aria-label="Drawing actions">
         <div class="top-toolbar-drag-handle" title="SparkyDraw Menu">
@@ -261,8 +284,8 @@
         </div>
     </div>
 
-    <script src="i18n.js?t=20260929_1512"></script>
-    <script src="app.js?t=20260929_1512"></script>
+    <script src="i18n.js?t=20260929_1524"></script>
+    <script src="app.js?t=20260929_1524"></script>
 
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">

@@ -49,6 +49,11 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero external framew
     - **Dual-Tier Storage Architecture**: Saves to `localStorage` with intelligent compression fallback, coupled with an automatic **IndexedDB** (`SparkyDrawDB`) backing store to eliminate 5MB quota restrictions on ultra-high-resolution screens.
     - **Preferences Saved**: Remembers customized color slots, active color index, selected brush size, and chosen language.
 
+- **Progressive Web App (PWA) & Offline-First Engine**:
+    - **True Offline Support**: Powered by a Service Worker (`sw.js`) that pre-caches the complete application shell and runtime-caches web fonts, allowing instant launch without any internet connection (even in Airplane mode).
+    - **Installable Native App Experience**: Includes a Web App Manifest (`manifest.webmanifest`) enabling "Add to Home Screen" / "Install App" on Android, iOS, Windows, macOS, and ChromeOS with standalone window display.
+    - **Full-Logo Splash Screen**: Features an in-app and native PWA boot splash screen displaying the golden glowing star and gradient "SparkyDraw" brand typography, providing an instant native startup experience.
+
 ---
 
 ## ⌨️ Keyboard Shortcuts
@@ -83,12 +88,15 @@ Then visit: [http://localhost:8080](http://localhost:8080) or open [https://spar
 
 ```text
 SparkyDraw/
-├── index.html    # Semantic HTML5 markup, toolbars, popovers, and canvas
-├── app.css       # Design tokens, responsive dock/toolbar layouts, RTL styles
-├── app.js        # Drawing engine, pointer events, undo/redo, dual-tier storage
-├── i18n.js       # Localization dictionary, vector SVG flags, language detection
-├── favicon.svg   # Vector star icon favicon
-└── README.md     # Documentation, feature guide, and shortcuts
+├── index.html            # Semantic HTML5 markup, splash screen, toolbars, popovers, canvas
+├── app.css               # Design tokens, splash animations, responsive layouts, RTL styles
+├── app.js                # Drawing engine, pointer events, undo/redo, PWA registration, storage
+├── i18n.js               # Localization dictionary, vector SVG flags, language detection
+├── sw.js                 # Service worker: offline pre-caching, runtime font caching
+├── manifest.webmanifest  # PWA manifest: standalone display, metadata, icons
+├── favicon.svg           # Vector star icon favicon
+├── icons/                # High-resolution PWA icons (192px, 512px, maskable, apple-touch-icon)
+└── README.md             # Documentation, feature guide, and shortcuts
 ```
 
 ---
