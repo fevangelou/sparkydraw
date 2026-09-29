@@ -1395,22 +1395,22 @@
             saveCanvasToStorage();
         });
 
-        // Hide initial splash screen smoothly once canvas & UI are ready
+        // Hide initial splash screen smoothly once canvas & UI are ready (3s on mobile/tablet)
         const splash = document.getElementById('appSplash');
         if (splash) {
-            requestAnimationFrame(() => {
-                setTimeout(() => {
-                    splash.classList.add('fade-out');
-                    setTimeout(() => splash.remove(), 400);
-                }, 200);
-            });
+            const isMobileOrTablet = window.innerWidth <= 1024 || window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
+            const delay = isMobileOrTablet ? 3000 : 250;
+            setTimeout(() => {
+                splash.classList.add('fade-out');
+                setTimeout(() => splash.remove(), 400);
+            }, delay);
         }
     }
 
     // Register PWA Service Worker for offline support
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js').catch(() => {});
+            navigator.serviceWorker.register('./sw.js').catch(() => { });
         });
     }
 

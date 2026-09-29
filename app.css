@@ -231,6 +231,11 @@ button {touch-action:manipulation;}
 .help-list li::before {content:'•';position:absolute;left:2px;color:var(--accent-spark);font-weight:bold;}
 .help-list strong {color:#ffffff;}
 .help-list kbd, .help-intro code, .help-list code {background:rgba(255, 255, 255, 0.12);padding:2px 6px;border-radius:4px;font-size:13px;font-family:monospace;color:#ffffff;}
+.help-github-link {display:flex;justify-content:center;align-items:center;padding:4px 0 2px;}
+.github-repo-link {display:inline-flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(255, 255, 255, 0.06);border:1px solid rgba(255, 255, 255, 0.12);border-radius:var(--radius-pill);color:var(--text-muted);font-size:13px;font-weight:600;text-decoration:none;transition:all var(--transition-fast);}
+.github-repo-link:hover {background:rgba(255, 255, 255, 0.14);border-color:rgba(255, 255, 255, 0.28);color:#ffffff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0, 0, 0, 0.3);}
+.github-repo-link .github-icon {fill:currentColor;flex-shrink:0;}
+.github-handle {color:var(--accent-spark);font-weight:700;}
 .help-footer {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:12px;border-top:1px solid rgba(255, 255, 255, 0.1);margin-top:2px;}
 .help-footer .btn-got-it, #btnGotIt {width:auto !important;min-width:fit-content;height:auto !important;min-height:36px;padding:8px 22px !important;font-size:14px;font-weight:700;white-space:nowrap;border-radius:var(--radius-pill);box-sizing:border-box;flex-shrink:0;}
 .help-meta {display:flex;align-items:center;gap:8px;}
