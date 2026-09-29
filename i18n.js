@@ -1,5 +1,5 @@
 /**
- * SparkyDraw i18n & Localization
+ * SparkyDraw.app i18n & Localization
  * Supports: English (en), Greek (el), Italian (it), Spanish (es), French (fr), German (de), Arabic (ar)
  */
 

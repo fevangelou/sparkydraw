@@ -1,6 +1,5 @@
 /**
- * SparkyDraw - Modern Drawing Web App for Kids
- * Vanilla HTML5, CSS3, & JavaScript
+ * SparkyDraw.app - Modern Drawing Web App for Kids
  */
 
 (function () {
