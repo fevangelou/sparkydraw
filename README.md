@@ -29,13 +29,20 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero frameworks or b
   - **Clear Canvas**: With a gentle confirmation dialog to prevent accidental wipes.
   - **Help & Info Dialog**: Interactive modal with app overview, tips on how the left & top toolbars work, and version metadata (`v1.0 • 2026.09.29`).
 
+- **Multi-Lingual Support (i18n)**:
+  - **6 Languages**: English (`en`), Greek (`el`), Italian (`it`), Spanish (`es`), French (`fr`), and German (`de`).
+  - **Auto-Detection**: Automatically detects the browser/OS language on page load, with default fallback to English.
+  - **Language Selector Dropdown**: Top toolbar button with crisp vector SVG flags and language names with native labels.
+  - **Persistent Language Choice**: Saved to `localStorage` (`sparkydraw_lang_v1`).
+  - **Complete UI Localization**: All buttons, flyouts, tooltips, dialogs, and toast messages adapt instantly (the app name "SparkyDraw" is preserved).
+
 - **Mobile & Tablet Friendly**:
   - **Portrait Mode**: Dock automatically transitions into a thumb-friendly horizontal dock at the bottom of the screen with touch scrolling and popovers opening upwards.
   - **Landscape Mode**: Left dock and top toolbar switch to ultra-compact layouts leaving maximum vertical height for drawing.
   - Safe orientation switching with offscreen canvas preservation.
 
 - **Local Persistence (`localStorage`)**:
-  - Remembers your custom colors, selected brush size, active color, and even artwork across page refreshes — no login required.
+  - Remembers your custom colors, selected brush size, active color, language, and artwork across page refreshes — no login required.
 
 ---
 
@@ -59,5 +66,6 @@ SparkyDraw/
 ├── index.html    # App structure, top toolbar, left dock, canvas
 ├── app.css       # Ubuntu dock & RDP styles, responsive layouts
 ├── app.js        # Canvas drawing engine, color picker, local storage, export
+├── i18n.js       # Multi-lingual translations, SVG flags, language detection
 └── README.md     # Documentation and usage guide
 ```

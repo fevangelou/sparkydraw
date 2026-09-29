@@ -30,11 +30,11 @@
     ];
 
     const BRUSH_SIZES = [
-        { size: 6, dotSize: 6, label: 'Fine (6px)' },
-        { size: 12, dotSize: 11, label: 'Small (12px)' },
-        { size: 20, dotSize: 18, label: 'Default / Large (20px)' }, // Default big enough for kids
-        { size: 34, dotSize: 26, label: 'Extra Large (34px)' },
-        { size: 52, dotSize: 34, label: 'Jumbo (52px)' }
+        { size: 6, dotSize: 6, key: 'brushFine', fallback: 'Fine (6px)' },
+        { size: 12, dotSize: 11, key: 'brushSmall', fallback: 'Small (12px)' },
+        { size: 20, dotSize: 18, key: 'brushMedium', fallback: 'Default / Large (20px)' }, // Default big enough for kids
+        { size: 34, dotSize: 26, key: 'brushLarge', fallback: 'Extra Large (34px)' },
+        { size: 52, dotSize: 34, key: 'brushJumbo', fallback: 'Jumbo (52px)' }
     ];
 
     const STORAGE_KEYS = {
@@ -88,6 +88,37 @@
     const btnConfirmClear = document.getElementById('btnConfirmClear');
     const leftDock = document.getElementById('leftDock');
 
+    // --- i18n DOM Elements ---
+    const btnLang = document.getElementById('btnLang');
+    const lblLang = document.getElementById('lblLang');
+    const currentFlag = document.getElementById('currentFlag');
+    const langPopover = document.getElementById('langPopover');
+    const langList = document.getElementById('langList');
+    const lblUndo = document.getElementById('lblUndo');
+    const lblRedo = document.getElementById('lblRedo');
+    const lblClear = document.getElementById('lblClear');
+    const lblFullscreen = document.getElementById('lblFullscreen');
+    const lblHelp = document.getElementById('lblHelp');
+    const lblSave = document.getElementById('lblSave');
+    const dockColorsTitle = document.getElementById('dockColorsTitle');
+    const dockBrushTitle = document.getElementById('dockBrushTitle');
+    const lblReset = document.getElementById('lblReset');
+    const lblColorPopoverTitle = document.getElementById('lblColorPopoverTitle');
+    const lblPickAnyColor = document.getElementById('lblPickAnyColor');
+    const lblBrushPopoverTitle = document.getElementById('lblBrushPopoverTitle');
+    const lblBrushSizePreview = document.getElementById('lblBrushSizePreview');
+    const clearDialogTitle = document.getElementById('clearDialogTitle');
+    const helpIntro = document.getElementById('helpIntro');
+    const helpLeftTitle = document.getElementById('helpLeftTitle');
+    const helpLeftColors = document.getElementById('helpLeftColors');
+    const helpLeftBrush = document.getElementById('helpLeftBrush');
+    const helpLeftReset = document.getElementById('helpLeftReset');
+    const helpTopTitle = document.getElementById('helpTopTitle');
+    const helpTopUndo = document.getElementById('helpTopUndo');
+    const helpTopClear = document.getElementById('helpTopClear');
+    const helpTopFullscreen = document.getElementById('helpTopFullscreen');
+    const helpTopSave = document.getElementById('helpTopSave');
+
     // --- Initialization ---
     function init() {
         loadPreferences();
@@ -100,6 +131,7 @@
         updateBrushCursor();
         updateBrushSlotUI();
         updateFullscreenUI();
+        applyTranslations();
     }
 
     // --- Storage & State Management ---
@@ -151,7 +183,7 @@
         updateBrushSlotUI();
         closeAllPopovers();
         updateBrushCursor();
-        showToast('Colors and brush size reset to original!');
+        showToast(I18N.t('toastReset'));
     }
 
     // --- UI Rendering ---
@@ -193,11 +225,12 @@
         if (!brushSizeGroup) return;
         brushSizeGroup.innerHTML = '';
         BRUSH_SIZES.forEach((b) => {
+            const label = I18N.t(b.key);
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'brush-size-btn' + (b.size === activeBrushSize ? ' active' : '');
-            btn.title = b.label;
-            btn.setAttribute('aria-label', b.label);
+            btn.title = label;
+            btn.setAttribute('aria-label', label);
             btn.setAttribute('role', 'radio');
             btn.setAttribute('aria-checked', b.size === activeBrushSize ? 'true' : 'false');
 
@@ -214,7 +247,7 @@
                 renderBrushSizes();
                 updateBrushSlotUI();
                 updateBrushCursor();
-                showToast(`Brush size set to ${b.label}`);
+                showToast(I18N.t('toastBrushSize', { size: label }));
             });
 
             brushSizeGroup.appendChild(btn);
@@ -233,7 +266,9 @@
 
     function updateBrushSlotUI() {
         if (!btnBrushSlot) return;
-        btnBrushSlot.title = `Brush Size: ${activeBrushSize}px (Click to change)`;
+        const sizeTitle = I18N.t('brushSlotTitle', { size: activeBrushSize });
+        btnBrushSlot.title = sizeTitle;
+        btnBrushSlot.setAttribute('aria-label', sizeTitle);
         btnBrushSlot.classList.toggle('active', brushPopover && !brushPopover.hidden);
         if (brushIndicatorDot) {
             brushIndicatorDot.style.backgroundColor = colors[activeColorIndex];
@@ -321,6 +356,149 @@
     function closeAllPopovers() {
         closeColorPopover();
         closeBrushPopover();
+        closeLanguagePopover();
+    }
+
+    // --- Language Selector & Translations ---
+    function openLanguagePopover() {
+        closeColorPopover();
+        closeBrushPopover();
+
+        const isCurrentlyOpen = !langPopover.hidden;
+        if (isCurrentlyOpen) {
+            closeLanguagePopover();
+            return;
+        }
+
+        renderLanguageMenu();
+        langPopover.hidden = false;
+        btnLang.setAttribute('aria-expanded', 'true');
+
+        const btnRect = btnLang.getBoundingClientRect();
+        const popoverWidth = 185;
+        let popoverLeft = btnRect.left + (btnRect.width / 2) - (popoverWidth / 2);
+        popoverLeft = Math.max(8, Math.min(window.innerWidth - popoverWidth - 8, popoverLeft));
+        const popoverTop = btnRect.bottom + 8;
+
+        langPopover.style.left = `${popoverLeft}px`;
+        langPopover.style.top = `${popoverTop}px`;
+    }
+
+    function closeLanguagePopover() {
+        if (langPopover) {
+            langPopover.hidden = true;
+        }
+        if (btnLang) {
+            btnLang.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    function renderLanguageMenu() {
+        if (!langList) return;
+        langList.innerHTML = '';
+        const current = I18N.getLanguage();
+
+        I18N.getLanguages().forEach((l) => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'lang-item' + (l.code === current ? ' active' : '');
+            item.setAttribute('role', 'menuitem');
+            item.setAttribute('data-code', l.code);
+            item.innerHTML = `
+                <span class="lang-flag-box">${I18N.getFlagSvg(l.code)}</span>
+                <span class="lang-names">
+                    <span class="lang-name-native">${l.native}</span>
+                    <span class="lang-name-en">${l.name}</span>
+                </span>
+                <svg class="lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            `;
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                selectLanguage(l.code);
+            });
+            langList.appendChild(item);
+        });
+    }
+
+    function selectLanguage(code) {
+        I18N.setLanguage(code);
+        applyTranslations();
+        closeLanguagePopover();
+        const langObj = I18N.getLanguages().find(l => l.code === code) || { name: code };
+        showToast(I18N.t('toastLangChanged', { lang: langObj.name }));
+    }
+
+    function formatHelpBullet(element, text) {
+        if (!element) return;
+        const colonIdx = text.indexOf(':');
+        if (colonIdx !== -1) {
+            const title = text.slice(0, colonIdx).trim();
+            const desc = text.slice(colonIdx + 1).trim();
+            element.innerHTML = `<strong>${title}:</strong> ${desc}`;
+        } else {
+            element.textContent = text;
+        }
+    }
+
+    function applyTranslations() {
+        const lang = I18N.getLanguage();
+        document.documentElement.lang = lang;
+
+        // Current flag & top bar language label
+        if (currentFlag) currentFlag.innerHTML = I18N.getFlagSvg(lang);
+        if (lblLang) lblLang.textContent = lang.toUpperCase();
+        if (btnLang) btnLang.title = I18N.t('language');
+
+        // Top toolbar buttons
+        if (btnUndo) btnUndo.title = I18N.t('undoTitle');
+        if (lblUndo) lblUndo.textContent = I18N.t('undo');
+        if (btnRedo) btnRedo.title = I18N.t('redoTitle');
+        if (lblRedo) lblRedo.textContent = I18N.t('redo');
+        if (btnClear) btnClear.title = I18N.t('clearTitle');
+        if (lblClear) lblClear.textContent = I18N.t('clear');
+        updateFullscreenUI();
+        if (btnHelp) btnHelp.title = I18N.t('helpTitle');
+        if (lblHelp) lblHelp.textContent = I18N.t('help');
+        if (btnSave) btnSave.title = I18N.t('savePngTitle');
+        if (lblSave) lblSave.textContent = I18N.t('savePng');
+
+        // Left dock
+        if (dockColorsTitle) dockColorsTitle.textContent = I18N.t('colorsTitle');
+        if (dockBrushTitle) dockBrushTitle.textContent = I18N.t('brushTitle');
+        updateBrushSlotUI();
+        if (btnReset) btnReset.title = I18N.t('resetTitle');
+        if (lblReset) lblReset.textContent = I18N.t('reset');
+
+        // Color & Brush popovers
+        if (lblColorPopoverTitle) lblColorPopoverTitle.textContent = I18N.t('changeColor');
+        if (lblPickAnyColor) lblPickAnyColor.textContent = I18N.t('pickAnyColor');
+        if (lblBrushPopoverTitle) lblBrushPopoverTitle.textContent = I18N.t('brushSizeHeading');
+        if (lblBrushSizePreview) lblBrushSizePreview.textContent = I18N.t('sizeLabel');
+
+        // Clear Dialog
+        if (clearDialogTitle) clearDialogTitle.textContent = I18N.t('clearDialogTitle');
+        const clearDesc = clearDialog ? clearDialog.querySelector('.dialog-text') : null;
+        if (clearDesc) clearDesc.textContent = I18N.t('clearDialogText');
+        if (btnCancelClear) btnCancelClear.textContent = I18N.t('keepDrawing');
+        if (btnConfirmClear) btnConfirmClear.textContent = I18N.t('clearCanvas');
+
+        // Help Modal
+        if (helpIntro) helpIntro.textContent = I18N.t('helpIntro');
+        if (helpLeftTitle) helpLeftTitle.textContent = I18N.t('helpLeftTitle');
+        formatHelpBullet(helpLeftColors, I18N.t('helpLeftColors'));
+        formatHelpBullet(helpLeftBrush, I18N.t('helpLeftBrush'));
+        formatHelpBullet(helpLeftReset, I18N.t('helpLeftReset'));
+        if (helpTopTitle) helpTopTitle.textContent = I18N.t('helpTopTitle');
+        formatHelpBullet(helpTopUndo, I18N.t('helpTopUndo'));
+        formatHelpBullet(helpTopClear, I18N.t('helpTopClear'));
+        formatHelpBullet(helpTopFullscreen, I18N.t('helpTopFullscreen'));
+        formatHelpBullet(helpTopSave, I18N.t('helpTopSave'));
+        if (btnGotIt) btnGotIt.textContent = I18N.t('gotIt');
+
+        // Re-render brush sizes to update tooltips/labels
+        renderBrushSizes();
     }
 
     function renderQuickSwatches() {
@@ -647,7 +825,7 @@
         restoreCanvasFromDataUrl(previousDataUrl);
         updateUndoRedoButtons();
         persistCanvas();
-        showToast('Undo');
+        showToast(I18N.t('toastUndo'));
     }
 
     function redo() {
@@ -659,7 +837,7 @@
         restoreCanvasFromDataUrl(nextDataUrl);
         updateUndoRedoButtons();
         persistCanvas();
-        showToast('Redo');
+        showToast(I18N.t('toastRedo'));
     }
 
     function restoreCanvasFromDataUrl(dataUrl) {
@@ -728,7 +906,7 @@
             downloadLink.click();
             document.body.removeChild(downloadLink);
 
-            showToast(`Saved as ${filename}! ✨`);
+            showToast(I18N.t('toastSaved', { filename }));
         } catch (err) {
             console.error('Failed to export image', err);
             showToast('Error saving image. Please try again.');
@@ -779,7 +957,7 @@
             const docEl = document.documentElement;
             if (docEl.requestFullscreen) {
                 docEl.requestFullscreen().catch(err => {
-                    showToast('Fullscreen not permitted: ' + err.message);
+                    showToast(I18N.t('toastFullscreenErr', { err: err.message }));
                 });
             } else if (docEl.webkitRequestFullscreen) {
                 docEl.webkitRequestFullscreen();
@@ -813,9 +991,9 @@
             iconExit.style.display = inFs ? 'block' : 'none';
         }
         if (label) {
-            label.textContent = inFs ? 'Exit' : 'Fullscreen';
+            label.textContent = inFs ? I18N.t('fullscreenExit') : I18N.t('fullscreen');
         }
-        btnFullscreen.title = inFs ? 'Exit Fullscreen (F)' : 'Toggle Fullscreen (F)';
+        btnFullscreen.title = inFs ? I18N.t('fullscreenTitleExit') : I18N.t('fullscreenTitleEnter');
     }
 
     // --- Toast Notifications ---
@@ -870,12 +1048,21 @@
                 openBrushPopover();
             });
         }
+        if (btnLang) {
+            btnLang.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLanguagePopover();
+            });
+        }
         document.addEventListener('click', (e) => {
             if (!colorPopover.hidden && !colorPopover.contains(e.target) && !leftDock.contains(e.target)) {
                 closeColorPopover();
             }
             if (brushPopover && !brushPopover.hidden && !brushPopover.contains(e.target) && !leftDock.contains(e.target)) {
                 closeBrushPopover();
+            }
+            if (langPopover && !langPopover.hidden && !langPopover.contains(e.target) && !btnLang.contains(e.target)) {
+                closeLanguagePopover();
             }
         });
 
@@ -918,7 +1105,7 @@
         btnConfirmClear.addEventListener('click', () => {
             clearDialog.hidden = true;
             clearCanvasInternal(true);
-            showToast('Canvas cleared!');
+            showToast(I18N.t('toastCleared'));
         });
 
         clearDialog.addEventListener('click', (e) => {

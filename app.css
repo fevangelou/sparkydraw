@@ -190,6 +190,33 @@ button {
     cursor: not-allowed;
     transform: none;
 }
+.btn-lang {
+    gap: 6px;
+    padding: 5px 8px;
+}
+.lang-flag-current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 14px;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+}
+.lang-flag-current .flag-svg {
+    width: 20px;
+    height: 14px;
+    display: block;
+}
+.chevron-icon {
+    transition: transform var(--transition-fast);
+    opacity: 0.75;
+}
+.btn-lang[aria-expanded="true"] .chevron-icon {
+    transform: rotate(180deg);
+}
 .btn-save {
     display: inline-flex;
     align-items: center;
@@ -679,6 +706,94 @@ button {
     z-index: 2;
 }
 /* ==========================================================================
+   Language Selector Popover Dropdown
+   ========================================================================== */
+.lang-popover {
+    position: fixed;
+    z-index: 200;
+    background: rgba(24, 26, 36, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 6px;
+    min-width: 175px;
+    animation: popover-in 0.15s ease-out;
+}
+.lang-popover-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.lang-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-main);
+    font-family: var(--font-family);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.lang-item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateX(2px);
+}
+.lang-item.active {
+    background: rgba(251, 191, 36, 0.18);
+    color: var(--accent-spark);
+}
+.lang-flag-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 15px;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+}
+.lang-flag-box .flag-svg {
+    width: 22px;
+    height: 15px;
+    display: block;
+}
+.lang-names {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    line-height: 1.2;
+}
+.lang-name-native {
+    font-size: 13px;
+    font-weight: 700;
+}
+.lang-name-en {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+.lang-item.active .lang-name-en {
+    color: rgba(251, 191, 36, 0.85);
+}
+.lang-check {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-spark);
+    opacity: 0;
+    flex-shrink: 0;
+    transition: opacity var(--transition-fast);
+}
+.lang-item.active .lang-check {
+    opacity: 1;
+}
+/* ==========================================================================
    Toast Notification
    ========================================================================== */
 .toast-message {
@@ -950,6 +1065,9 @@ button {
         padding: 0;
         justify-content: center;
     }
+    .btn-lang .chevron-icon {
+        display: none;
+    }
     .btn-save {
         height: 32px;
         padding: 4px 10px;
@@ -1052,6 +1170,9 @@ button {
         height: 26px;
         padding: 0;
         justify-content: center;
+    }
+    .btn-lang .chevron-icon {
+        display: none;
     }
     .btn-save {
         height: 26px;
