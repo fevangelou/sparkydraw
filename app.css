@@ -1215,16 +1215,17 @@ button {
         border-radius: 16px;
         flex-direction: row;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
     .dock-section-title {
         display: none;
     }
     /* Scroll through colors only */
     .dock-colors-scroll {
-        flex: 1 1 auto;
+        flex: 1 1 0;
         min-width: 0;
         min-height: 0;
+        width: auto;
         height: 100%;
         display: flex;
         flex-direction: row;
@@ -1238,10 +1239,19 @@ button {
     .dock-colors-scroll::-webkit-scrollbar {
         display: none;
     }
-    .color-slots-grid {
-        flex-direction: row;
-        gap: 6px;
+    .dock-colors-scroll .dock-section {
         width: auto;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .color-slots-grid {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: max-content;
+        gap: 6px;
         flex-shrink: 0;
         padding-bottom: 0;
     }
@@ -1258,15 +1268,25 @@ button {
         width: auto;
         height: 100%;
         flex-shrink: 0;
-        margin-top: 0;
-        margin-left: auto;
-        padding-top: 0;
-        gap: 4px;
+        margin: 0;
+        padding: 0;
+        gap: 5px;
+    }
+    .dock-pinned-tools .dock-section {
+        width: auto;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
     }
     .dock-divider {
         width: 1px;
-        height: 26px;
-        margin: 0 2px;
+        height: 24px;
+        margin: 0;
         flex-shrink: 0;
     }
     .brush-slot-btn {
@@ -1275,15 +1295,16 @@ button {
         flex-shrink: 0;
     }
     .dock-reset {
-        margin-top: 0;
+        margin: 0;
         padding: 0;
         flex-shrink: 0;
     }
     .btn-dock-reset {
-        width: 36px;
+        width: 32px;
         height: 32px;
         border-radius: 8px;
         padding: 0;
+        flex-shrink: 0;
     }
     .reset-text {
         display: none;
