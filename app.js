@@ -1395,15 +1395,25 @@
             saveCanvasToStorage();
         });
 
-        // Hide initial splash screen smoothly once canvas & UI are ready (3s on mobile/tablet)
+        // Hide initial splash screen smoothly once canvas & UI are ready (3s on mobile/tablet browser; bypassed in installed standalone PWA)
         const splash = document.getElementById('appSplash');
         if (splash) {
-            const isMobileOrTablet = window.innerWidth <= 1024 || window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
-            const delay = isMobileOrTablet ? 3000 : 250;
-            setTimeout(() => {
-                splash.classList.add('fade-out');
-                setTimeout(() => splash.remove(), 400);
-            }, delay);
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                window.navigator.standalone === true ||
+                document.referrer.includes('android-app://');
+
+            if (isStandalone) {
+                // In installed PWA mode, the OS (Android/iOS) already displays its native splash screen.
+                // Bypassing the in-page splash prevents double splash screen and crossfade glitching.
+                splash.remove();
+            } else {
+                const isMobileOrTablet = window.innerWidth <= 1024 || window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
+                const delay = isMobileOrTablet ? 3000 : 250;
+                setTimeout(() => {
+                    splash.classList.add('fade-out');
+                    setTimeout(() => splash.remove(), 400);
+                }, delay);
+            }
         }
     }
 

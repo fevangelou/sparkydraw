@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sparkydraw-v1.1';
+const CACHE_NAME = 'sparkydraw-v1.2';
 
 const PRECACHE_ASSETS = [
     './',
