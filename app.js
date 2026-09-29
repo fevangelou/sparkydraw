@@ -49,6 +49,7 @@
     let activeColorIndex = 0;
     let activeBrushSize = BRUSH_SIZES[2].size; // 20px default
     let isDrawing = false;
+    let isCanvasInitialized = false;
     let strokePoints = [];
     let editingSlotIndex = null;
     let undoStack = [];
@@ -644,9 +645,9 @@
         const width = window.innerWidth;
         const height = window.innerHeight;
 
-        // Cache current content to offscreen canvas before resizing
+        // Cache current content to offscreen canvas before resizing (ONLY once initialized, on resize/rotation)
         let tempCanvas = null;
-        if (canvas.width > 0 && canvas.height > 0) {
+        if (isCanvasInitialized && canvas.width > 0 && canvas.height > 0) {
             tempCanvas = document.createElement('canvas');
             tempCanvas.width = canvas.width;
             tempCanvas.height = canvas.height;
@@ -671,40 +672,33 @@
         ctx.restore();
 
         if (tempCanvas) {
-            // Restore cached drawing seamlessly without clipping or distorting
+            // Restore cached drawing seamlessly without clipping or distorting on window resize / orientation change
             ctx.save();
             ctx.setTransform(1, 0, 0, 1, 0, 0);
             ctx.drawImage(tempCanvas, 0, 0);
             ctx.restore();
         } else {
-            // Check if we have a saved drawing in localStorage
-            const savedDataUrl = localStorage.getItem(STORAGE_KEYS.CANVAS_DATA);
-            if (savedDataUrl) {
-                const img = new Image();
-                img.onload = () => {
-                    ctx.drawImage(img, 0, 0, width, height);
-                    saveCanvasSnapshot(); // Start undo history with loaded drawing
-                };
-                img.src = savedDataUrl;
-            } else {
-                saveCanvasSnapshot();
-            }
+            // Initial page load or browser refresh: restore from persistent drawing memory
+            restoreSavedCanvas();
         }
+
+        isCanvasInitialized = true;
     }
 
     function clearCanvasInternal(recordUndo = true) {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
-
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.restore();
 
+        try {
+            localStorage.removeItem(STORAGE_KEYS.CANVAS_DATA);
+        } catch (e) { }
+        clearFromIndexedDB();
+
         if (recordUndo) {
             saveCanvasSnapshot();
-            persistCanvas();
         }
     }
 
@@ -853,17 +847,133 @@
         btnRedo.disabled = redoStack.length === 0;
     }
 
+    // --- IndexedDB Backing Store (Quota-Free Canvas Storage) ---
+    const IDB_NAME = 'SparkyDrawDB';
+    const IDB_STORE = 'canvas_store';
+    const IDB_KEY = 'latest_drawing';
+
+    function openIndexedDB(callback) {
+        if (!window.indexedDB) {
+            callback(null);
+            return;
+        }
+        try {
+            const req = indexedDB.open(IDB_NAME, 1);
+            req.onupgradeneeded = () => {
+                const db = req.result;
+                if (!db.objectStoreNames.contains(IDB_STORE)) {
+                    db.createObjectStore(IDB_STORE);
+                }
+            };
+            req.onsuccess = () => callback(req.result);
+            req.onerror = () => callback(null);
+        } catch (e) {
+            callback(null);
+        }
+    }
+
+    function saveToIndexedDB(dataUrl) {
+        openIndexedDB((db) => {
+            if (!db) return;
+            try {
+                const tx = db.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).put(dataUrl, IDB_KEY);
+            } catch (e) { }
+        });
+    }
+
+    function loadFromIndexedDB(callback) {
+        openIndexedDB((db) => {
+            if (!db) {
+                callback(null);
+                return;
+            }
+            try {
+                const tx = db.transaction(IDB_STORE, 'readonly');
+                const req = tx.objectStore(IDB_STORE).get(IDB_KEY);
+                req.onsuccess = () => callback(req.result || null);
+                req.onerror = () => callback(null);
+            } catch (e) {
+                callback(null);
+            }
+        });
+    }
+
+    function clearFromIndexedDB() {
+        openIndexedDB((db) => {
+            if (!db) return;
+            try {
+                const tx = db.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).delete(IDB_KEY);
+            } catch (e) { }
+        });
+    }
+
+    function restoreSavedCanvas() {
+        let savedDataUrl = null;
+        try {
+            savedDataUrl = localStorage.getItem(STORAGE_KEYS.CANVAS_DATA);
+        } catch (e) { }
+
+        if (savedDataUrl) {
+            renderDataUrlToCanvas(savedDataUrl);
+        } else {
+            // Check IndexedDB fallback
+            loadFromIndexedDB((idbDataUrl) => {
+                if (idbDataUrl) {
+                    renderDataUrlToCanvas(idbDataUrl);
+                } else {
+                    saveCanvasSnapshot(); // Start undo stack with blank canvas
+                }
+            });
+        }
+    }
+
+    function renderDataUrlToCanvas(dataUrl) {
+        const img = new Image();
+        img.onload = () => {
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            ctx.restore();
+
+            try {
+                undoStack = [canvas.toDataURL('image/png')];
+            } catch (e) {
+                undoStack = [dataUrl];
+            }
+            redoStack = [];
+            updateUndoRedoButtons();
+        };
+        img.src = dataUrl;
+    }
+
     let persistTimer = null;
+    function saveCanvasToStorage() {
+        try {
+            // Prefer PNG for clean, lossless quality
+            let dataUrl = canvas.toDataURL('image/png');
+            try {
+                localStorage.setItem(STORAGE_KEYS.CANVAS_DATA, dataUrl);
+            } catch (quotaErr) {
+                // If PNG exceeds ~5MB localStorage quota, fall back to high-quality JPEG
+                try {
+                    dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                    localStorage.setItem(STORAGE_KEYS.CANVAS_DATA, dataUrl);
+                } catch (jpegErr) {
+                    console.warn('LocalStorage quota exceeded for canvas data', jpegErr);
+                }
+            }
+            // Always back up to IndexedDB as well (no 5MB quota limit)
+            saveToIndexedDB(dataUrl);
+        } catch (err) {
+            console.warn('Could not persist canvas', err);
+        }
+    }
+
     function persistCanvas() {
         clearTimeout(persistTimer);
-        persistTimer = setTimeout(() => {
-            try {
-                const dataUrl = canvas.toDataURL('image/png');
-                localStorage.setItem(STORAGE_KEYS.CANVAS_DATA, dataUrl);
-            } catch (err) {
-                // LocalStorage quota might be exceeded for high-res images
-            }
-        }, 400);
+        persistTimer = setTimeout(saveCanvasToStorage, 250);
     }
 
     // --- Saving Local PNG Image (SparkyDraw_YYYYMMDD_HHmmss.png) ---
@@ -1178,6 +1288,16 @@
         if (window.screen && window.screen.orientation) {
             window.screen.orientation.addEventListener('change', handleViewportChange);
         }
+
+        // Auto-save immediately before page unload / accidental browser refresh
+        window.addEventListener('beforeunload', () => {
+            clearTimeout(persistTimer);
+            saveCanvasToStorage();
+        });
+        window.addEventListener('pagehide', () => {
+            clearTimeout(persistTimer);
+            saveCanvasToStorage();
+        });
     }
 
     // Run on DOM ready
