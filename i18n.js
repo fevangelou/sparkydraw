@@ -76,12 +76,12 @@ const I18N = (function () {
 
     const LANGUAGES = [
         { code: 'en', name: 'English', native: 'English' },
-        { code: 'el', name: 'Greek', native: 'Ελληνικά' },
-        { code: 'it', name: 'Italian', native: 'Italiano' },
-        { code: 'es', name: 'Spanish', native: 'Español' },
+        { code: 'ar', name: 'Arabic', native: 'العربية' },
         { code: 'fr', name: 'French', native: 'Français' },
         { code: 'de', name: 'German', native: 'Deutsch' },
-        { code: 'ar', name: 'Arabic', native: 'العربية' }
+        { code: 'el', name: 'Greek', native: 'Ελληνικά' },
+        { code: 'it', name: 'Italian', native: 'Italiano' },
+        { code: 'es', name: 'Spanish', native: 'Español' }
     ];
 
     const TRANSLATIONS = {
@@ -172,7 +172,7 @@ const I18N = (function () {
             clearDialogText: 'Αυτό θα καθαρίσει τον καμβά σας. Μπορείτε πάντα να χρησιμοποιήσετε την Αναίρεση αν αλλάξετε γνώμη!',
             keepDrawing: 'Συνέχεια ζωγραφικής',
             clearCanvas: 'Καθαρισμός καμβά',
-            helpIntro: 'Το SparkyDraw είναι μια απλή, απολαυστική εφαρμογή ζωγραφικής σχεδιασμένη για παιδιά (και όχι μόνο!), συμβατή με κάθε συσκευή και τύπο οθόνης, με υποστήριξη αφής ή μη και σε οποιονδήποτε προσανατολισμό. Θυμάται τα έργα και τις ρυθμίσεις σας μεταξύ των επισκέψεων, εξάγει εικόνες PNG υψηλής ανάλυσης τοπικά και προσαρμόζεται εύκολα σε μικρές ή μεγάλες οθόνες, τόσο σε κάθετη όσο και σε οριζόντια προβολή!',
+            helpIntro: 'Το SparkyDraw είναι μια απλή, απολαυστική εφαρμογή ζωγραφικής σχεδιασμένη για παιδιά (και όχι μόνο!), συμβατή με κάθε συσκευή και τύπο οθόνης (ιδανική για αφή, γραφίδα/pointer & ποντίκι) και σε οποιονδήποτε προσανατολισμό. Θυμάται τα έργα και τις ρυθμίσεις σας μεταξύ των επισκέψεων, εξάγει εικόνες PNG υψηλής ανάλυσης τοπικά και προσαρμόζεται εύκολα σε μικρές ή μεγάλες οθόνες, τόσο σε κάθετη όσο και σε οριζόντια προβολή!',
             helpLeftTitle: 'Αριστερή γραμμή εργαλείων',
             helpLeftColors: 'Χρώματα: Κάντε κλικ σε ένα από τα 12 χρώματα για να ζωγραφίσετε. Κάντε κλικ ξανά για να επιλέξετε άλλο χρώμα.',
             helpLeftBrush: 'Πινέλο: Κάντε κλικ στο εικονίδιο πινέλου για να επιλέξετε πάχος γραμμής με ζωντανή προεπισκόπηση.',
@@ -226,7 +226,7 @@ const I18N = (function () {
             clearDialogText: 'Questo cancellerà la tela. Puoi sempre usare Annulla se cambi idea!',
             keepDrawing: 'Continua a disegnare',
             clearCanvas: 'Cancella tela',
-            helpIntro: 'SparkyDraw è un\'applicazione di disegno semplice e deliziosa progettata per bambini (e non solo!), compatibile con qualsiasi dispositivo e formato di schermo, touch o meno e in qualsiasi orientamento. Ricorda i tuoi disegni e impostazioni tra le visite, esporta localmente immagini PNG ad alta risoluzione e si adatta facilmente a schermi piccoli o grandi, sia in modalità verticale che orizzontale!',
+            helpIntro: 'SparkyDraw è un\'applicazione di disegno semplice e deliziosa progettata per bambini (e non solo!), compatibile con qualsiasi dispositivo e formato di schermo (ideale per touch, penna/pointer e mouse) e in qualsiasi orientamento. Ricorda i tuoi disegni e impostazioni tra le visite, esporta localmente immagini PNG ad alta risoluzione e si adatta facilmente a schermi piccoli o grandi, sia in modalità verticale che orizzontale!',
             helpLeftTitle: 'Barra laterale',
             helpLeftColors: 'Colori: Clicca su uno dei 12 colori per disegnare. Clicca di nuovo per personalizzare lo slot.',
             helpLeftBrush: 'Pennello: Clicca sull\'icona del pennello per scegliere lo spessore con anteprima in tempo reale.',
@@ -280,7 +280,7 @@ const I18N = (function () {
             clearDialogText: 'Esto borrará tu lienzo. ¡Siempre puedes usar Deshacer si cambias de opinión!',
             keepDrawing: 'Seguir dibujando',
             clearCanvas: 'Borrar lienzo',
-            helpIntro: 'SparkyDraw es una aplicación de dibujo simple y encantadora diseñada para niños (¡y no solo para ellos!), compatible con cualquier dispositivo y formato de pantalla, táctil o no y en cualquier orientación. ¡Recuerda tus dibujos y ajustes entre visitas, exporta imágenes PNG de alta resolución localmente y se adapta fácilmente a pantallas pequeñas o grandes, tanto en modo vertical como horizontal!',
+            helpIntro: 'SparkyDraw es una aplicación de dibujo simple y encantadora diseñada para niños (¡y no solo para ellos!), compatible con cualquier dispositivo y formato de pantalla (ideal para pantalla táctil, lápiz/puntero y ratón) y en cualquier orientación. ¡Recuerda tus dibujos y ajustes entre visitas, exporta imágenes PNG de alta resolución localmente y se adapta fácilmente a pantallas pequeñas o grandes, tanto en modo vertical como horizontal!',
             helpLeftTitle: 'Barra lateral',
             helpLeftColors: 'Colores: Haz clic en cualquiera de los 12 colores para pintar. Haz clic de nuevo para personalizar esa casilla.',
             helpLeftBrush: 'Pincel: Haz clic en el icono del pincel para elegir el grosor con vista previa en vivo.',
@@ -334,7 +334,7 @@ const I18N = (function () {
             clearDialogText: 'Cela effacera votre toile. Vous pourrez toujours utiliser Annuler en cas d\'erreur !',
             keepDrawing: 'Continuer à dessiner',
             clearCanvas: 'Effacer la toile',
-            helpIntro: 'SparkyDraw est une application de dessin simple et réjouissante conçue pour les enfants (et pas seulement !), compatible avec tous les appareils et formats d\'écran, tactiles ou non et dans toutes les orientations. Elle mémorise vos créations et réglages d\'une visite à l\'autre, exporte localement des images PNG haute résolution et s\'adapte facilement aux petits comme aux grands écrans, en mode portrait comme paysage !',
+            helpIntro: 'SparkyDraw est une application de dessin simple et réjouissante conçue pour les enfants (et pas seulement !), compatible avec tous les appareils et formats d\'écran (tactile, stylet/pointeur et souris) et dans toutes les orientations. Elle mémorise vos créations et réglages d\'une visite à l\'autre, exporte localement des images PNG haute résolution et s\'adapte facilement aux petits comme aux grands écrans, en mode portrait comme paysage !',
             helpLeftTitle: 'Barre latérale',
             helpLeftColors: 'Couleurs : Cliquez sur l\'une des 12 couleurs pour dessiner. Cliquez à nouveau pour la personnaliser.',
             helpLeftBrush: 'Pinceau : Cliquez sur l\'icône du pinceau pour choisir l\'épaisseur avec un aperçu en direct.',
@@ -388,7 +388,7 @@ const I18N = (function () {
             clearDialogText: 'Dadurch wird die Leinwand geleert. Du kannst es jederzeit mit Rückgängig wiederherstellen!',
             keepDrawing: 'Weiterzeichnen',
             clearCanvas: 'Leinwand leeren',
-            helpIntro: 'SparkyDraw ist eine einfache, tolle Zeichen-App für Kinder (und nicht nur für sie!), kompatibel mit jedem Gerät und Bildschirmformat, mit Touchscreen oder Maus und in jeder Ausrichtung. Sie merkt sich deine Kunstwerke und Einstellungen über Besuche hinweg, exportiert hochauflösende PNG-Bilder lokal und passt sich mühelos an kleine oder große Bildschirme an, sowohl im Hoch- als auch im Querformat!',
+            helpIntro: 'SparkyDraw ist eine einfache, tolle Zeichen-App für Kinder (und nicht nur für sie!), kompatibel mit jedem Gerät und Bildschirmformat (ideal für Touch, Stift/Pointer & Maus) und in jeder Ausrichtung. Sie merkt sich deine Kunstwerke und Einstellungen über Besuche hinweg, exportiert hochauflösende PNG-Bilder lokal und passt sich mühelos an kleine oder große Bildschirme an, sowohl im Hoch- als auch im Querformat!',
             helpLeftTitle: 'Linke Symbolleiste',
             helpLeftColors: 'Farben: Klicke auf eine der 12 Farben zum Malen. Klicke erneut, um den Farbton anzupassen.',
             helpLeftBrush: 'Pinsel: Klicke auf das Pinselsymbol, um die Strichstärke mit Live-Vorschau auszuwählen.',
@@ -442,7 +442,7 @@ const I18N = (function () {
             clearDialogText: 'سيؤدي هذا إلى مسح لوحة الرسم. يمكنك دائماً استخدام التراجع إذا غيرت رأيك!',
             keepDrawing: 'متابعة الرسم',
             clearCanvas: 'مسح اللوحة',
-            helpIntro: 'تطبيق SparkyDraw هو تطبيق رسم بسيط ورائع مصمم للأطفال (وليس لهم فقط!)، متوافق مع أي جهاز وتنسيق شاشة، سواء كانت تعمل باللمس أم لا وفي أي اتجاه. يتذكر أعمالك الفنية وإعداداتك بين الزيارات، ويصدّر صور PNG عالية الدقة محلياً، ويتكيف بسهولة مع الشاشات الصغيرة أو الكبيرة، في كلا الوضعين الرأسي والأفقي!',
+            helpIntro: 'تطبيق SparkyDraw هو تطبيق رسم بسيط ورائع مصمم للأطفال (وليس لهم فقط!)، متوافق مع أي جهاز وتنسيق شاشة (يدعم اللمس، القلم/المؤشر والفأرة) وفي أي اتجاه. يتذكر أعمالك الفنية وإعداداتك بين الزيارات، ويصدّر صور PNG عالية الدقة محلياً، ويتكيف بسهولة مع الشاشات الصغيرة أو الكبيرة، في كلا الوضعين الرأسي والأفقي!',
             helpLeftTitle: 'شريط الأدوات الجانبي',
             helpLeftColors: 'الألوان: انقر فوق أي من خانات الألوان الـ 12 لاختيار لون الرسم. انقر فوقها مرة أخرى لفتح منتقي الألوان وتخصيصها.',
             helpLeftBrush: 'الفرشاة: انقر فوق أيقونة الفرشاة لاختيار سمك الخط (من التفاصيل الدقيقة إلى القلم العريض) مع معاينة فورية.',
