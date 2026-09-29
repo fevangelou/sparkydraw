@@ -354,36 +354,95 @@ button {
     opacity: 0.85;
 }
 /* ==========================================================================
-   Brush Sizes (Photoshop Style Dots)
+   Brush Slot Button (Ubuntu Dock)
    ========================================================================== */
-.brush-size-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 4px 0;
-}
-.brush-size-btn {
+.brush-slot-btn {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 38px;
+    border-radius: var(--radius-slot); /* 5px rounded borders */
+    box-shadow: var(--slot-shadow);
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
-    border: none;
+    transition: transform var(--transition-bounce), box-shadow var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+    outline: none;
+    flex-shrink: 0;
+}
+.brush-slot-btn:hover {
+    transform: scale(1.12);
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+.brush-slot-btn:active {
+    transform: scale(0.96);
+}
+.brush-slot-btn.active {
+    transform: scale(1.14);
+    border-color: var(--accent-spark);
+    background: rgba(251, 191, 36, 0.2);
+    color: var(--accent-spark);
+    box-shadow: 0 0 0 2px var(--accent-spark), 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 3;
+}
+.brush-icon {
+    width: 20px;
+    height: 20px;
+}
+.brush-indicator-dot {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
+    background-color: var(--accent-spark);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   Brush Sizes Popover
+   ========================================================================== */
+.brush-popover .popover-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.brush-size-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    width: 100%;
+    padding: 2px 0;
+}
+.brush-size-btn {
+    position: relative;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
     cursor: pointer;
-    transition: transform var(--transition-bounce), background-color var(--transition-fast);
+    transition: transform var(--transition-bounce), background-color var(--transition-fast), border-color var(--transition-fast);
     outline: none;
 }
 .brush-size-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.08);
+    background: rgba(255, 255, 255, 0.18);
+    transform: scale(1.1);
 }
 .brush-size-btn:active {
-    transform: scale(0.94);
+    transform: scale(0.95);
 }
 .brush-dot {
     border-radius: 50%;
@@ -392,15 +451,52 @@ button {
     transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 .brush-size-btn.active {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(251, 191, 36, 0.2);
+    border-color: var(--accent-spark);
 }
 .brush-size-btn.active::before {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 2px;
     border: 2px solid var(--accent-spark);
-    border-radius: 50%;
+    border-radius: 6px;
     animation: pulse-ring 2s infinite ease-in-out;
+}
+
+/* Live brush size preview box */
+.brush-size-preview-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+.brush-preview-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+.brush-preview-circle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+}
+.brush-preview-circle {
+    border-radius: 50%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: width 0.12s ease, height 0.12s ease, background-color 0.12s ease;
+}
+.brush-preview-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-spark);
+    font-family: 'Fredoka', cursive, sans-serif;
 }
 @keyframes pulse-ring {
     0%,
@@ -782,16 +878,9 @@ button {
         height: 32px;
         flex-shrink: 0;
     }
-    .brush-size-group {
-        flex-direction: row;
-        width: auto;
-        gap: 4px;
-        padding: 0;
-        flex-shrink: 0;
-    }
-    .brush-size-btn {
-        width: 34px;
-        height: 34px;
+    .brush-slot-btn {
+        width: 32px;
+        height: 32px;
         flex-shrink: 0;
     }
     .dock-reset {
@@ -861,13 +950,9 @@ button {
         width: 32px;
         height: 24px;
     }
-    .brush-size-group {
-        gap: 2px;
-        padding: 2px 0;
-    }
-    .brush-size-btn {
-        width: 28px;
-        height: 28px;
+    .brush-slot-btn {
+        width: 32px;
+        height: 24px;
     }
     .dock-reset {
         padding: 2px 0 0;

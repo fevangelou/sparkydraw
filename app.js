@@ -66,6 +66,12 @@
     const btnRedo = document.getElementById('btnRedo');
     const btnClear = document.getElementById('btnClear');
     const btnFullscreen = document.getElementById('btnFullscreen');
+    const btnBrushSlot = document.getElementById('btnBrushSlot');
+    const brushIndicatorDot = document.getElementById('brushIndicatorDot');
+    const brushPopover = document.getElementById('brushPopover');
+    const btnCloseBrushPopover = document.getElementById('btnCloseBrushPopover');
+    const brushPreviewCircle = document.getElementById('brushPreviewCircle');
+    const brushPreviewValue = document.getElementById('brushPreviewValue');
     const colorPopover = document.getElementById('colorPopover');
     const btnClosePopover = document.getElementById('btnClosePopover');
     const nativeColorInput = document.getElementById('nativeColorInput');
@@ -88,6 +94,7 @@
         setupEventListeners();
         updateUndoRedoButtons();
         updateBrushCursor();
+        updateBrushSlotUI();
         updateFullscreenUI();
     }
 
@@ -137,7 +144,8 @@
 
         renderColorSlots();
         renderBrushSizes();
-        closeColorPopover();
+        updateBrushSlotUI();
+        closeAllPopovers();
         updateBrushCursor();
         showToast('Colors and brush size reset to original!');
     }
@@ -178,6 +186,7 @@
     }
 
     function renderBrushSizes() {
+        if (!brushSizeGroup) return;
         brushSizeGroup.innerHTML = '';
         BRUSH_SIZES.forEach((b) => {
             const btn = document.createElement('button');
@@ -199,12 +208,115 @@
                 activeBrushSize = b.size;
                 savePreferences();
                 renderBrushSizes();
+                updateBrushSlotUI();
                 updateBrushCursor();
                 showToast(`Brush size set to ${b.label}`);
             });
 
             brushSizeGroup.appendChild(btn);
         });
+
+        // Update live preview in brush popover
+        if (brushPreviewCircle) {
+            brushPreviewCircle.style.width = `${activeBrushSize}px`;
+            brushPreviewCircle.style.height = `${activeBrushSize}px`;
+            brushPreviewCircle.style.backgroundColor = colors[activeColorIndex];
+        }
+        if (brushPreviewValue) {
+            brushPreviewValue.textContent = `${activeBrushSize} px`;
+        }
+    }
+
+    function updateBrushSlotUI() {
+        if (!btnBrushSlot) return;
+        btnBrushSlot.title = `Brush Size: ${activeBrushSize}px (Click to change)`;
+        btnBrushSlot.classList.toggle('active', brushPopover && !brushPopover.hidden);
+        if (brushIndicatorDot) {
+            brushIndicatorDot.style.backgroundColor = colors[activeColorIndex];
+        }
+    }
+
+    function openBrushPopover() {
+        closeColorPopover(); // Mutual exclusion with color popover
+
+        const isCurrentlyOpen = !brushPopover.hidden;
+        if (isCurrentlyOpen) {
+            closeBrushPopover();
+            return;
+        }
+
+        const dockRect = leftDock.getBoundingClientRect();
+        const slotRect = btnBrushSlot.getBoundingClientRect();
+        const isBottomDock = dockRect.top > window.innerHeight - 130 || dockRect.width > dockRect.height * 1.5;
+
+        brushPopover.hidden = false;
+        btnBrushSlot.classList.add('active');
+
+        const popoverWidth = 230;
+        const popoverHeight = brushPopover.offsetHeight || 150;
+        const arrow = brushPopover.querySelector('.popover-arrow');
+
+        if (isBottomDock) {
+            // Position above the brush button in mobile portrait mode
+            brushPopover.classList.add('arrow-bottom');
+            brushPopover.classList.remove('arrow-left');
+
+            let popoverLeft = slotRect.left + (slotRect.width / 2) - (popoverWidth / 2);
+            popoverLeft = Math.max(8, Math.min(window.innerWidth - popoverWidth - 8, popoverLeft));
+
+            let popoverTop = dockRect.top - popoverHeight - 12;
+            if (popoverTop < 10) popoverTop = 10;
+
+            brushPopover.style.left = `${popoverLeft}px`;
+            brushPopover.style.top = `${popoverTop}px`;
+
+            if (arrow) {
+                const arrowX = Math.max(16, Math.min(popoverWidth - 16, slotRect.left + (slotRect.width / 2) - popoverLeft));
+                arrow.style.left = `${arrowX}px`;
+                arrow.style.top = 'auto';
+                arrow.style.bottom = '-7px';
+            }
+        } else {
+            // Position to the right of the brush button in landscape / desktop mode
+            brushPopover.classList.add('arrow-left');
+            brushPopover.classList.remove('arrow-bottom');
+
+            let popoverLeft = dockRect.right + 10;
+            if (popoverLeft + popoverWidth > window.innerWidth - 8) {
+                popoverLeft = window.innerWidth - popoverWidth - 8;
+            }
+
+            let popoverTop = slotRect.top - 15;
+            const maxTop = window.innerHeight - popoverHeight - 10;
+            if (popoverTop > maxTop) popoverTop = maxTop;
+            if (popoverTop < 10) popoverTop = 10;
+
+            brushPopover.style.left = `${popoverLeft}px`;
+            brushPopover.style.top = `${popoverTop}px`;
+
+            if (arrow) {
+                const arrowY = Math.max(12, Math.min(popoverHeight - 16, slotRect.top - popoverTop + (slotRect.height / 2) - 7));
+                arrow.style.left = '-7px';
+                arrow.style.top = `${arrowY}px`;
+                arrow.style.bottom = 'auto';
+            }
+        }
+
+        renderBrushSizes();
+    }
+
+    function closeBrushPopover() {
+        if (brushPopover) {
+            brushPopover.hidden = true;
+        }
+        if (btnBrushSlot) {
+            btnBrushSlot.classList.remove('active');
+        }
+    }
+
+    function closeAllPopovers() {
+        closeColorPopover();
+        closeBrushPopover();
     }
 
     function renderQuickSwatches() {
@@ -252,6 +364,7 @@
     }
 
     function openColorPopover(index, slotElement, isAlreadyActive) {
+        closeBrushPopover(); // Mutual exclusion with brush popover
         editingSlotIndex = index;
         const currentColor = colors[index];
 
@@ -337,7 +450,11 @@
             popoverPreviewSwatch.style.backgroundColor = newColor;
             savePreferences();
             renderColorSlots();
+            updateBrushSlotUI();
             updateBrushCursor();
+            if (brushPreviewCircle) {
+                brushPreviewCircle.style.backgroundColor = newColor;
+            }
         }
     }
 
@@ -426,7 +543,7 @@
         if (e.button !== undefined && e.button !== 0) return;
 
         isDrawing = true;
-        closeColorPopover();
+        closeAllPopovers();
 
         try {
             canvas.setPointerCapture(e.pointerId);
@@ -740,9 +857,21 @@
 
         // Close popover
         btnClosePopover.addEventListener('click', closeColorPopover);
+        if (btnCloseBrushPopover) {
+            btnCloseBrushPopover.addEventListener('click', closeBrushPopover);
+        }
+        if (btnBrushSlot) {
+            btnBrushSlot.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openBrushPopover();
+            });
+        }
         document.addEventListener('click', (e) => {
             if (!colorPopover.hidden && !colorPopover.contains(e.target) && !leftDock.contains(e.target)) {
                 closeColorPopover();
+            }
+            if (brushPopover && !brushPopover.hidden && !brushPopover.contains(e.target) && !leftDock.contains(e.target)) {
+                closeBrushPopover();
             }
         });
 
@@ -811,7 +940,7 @@
                 e.preventDefault();
                 saveDrawingToPNG();
             } else if (e.key === 'Escape') {
-                closeColorPopover();
+                closeAllPopovers();
                 clearDialog.hidden = true;
             } else if (e.key === 'f' || e.key === 'F') {
                 if (!e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
@@ -827,7 +956,7 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 setupCanvas();
-                closeColorPopover();
+                closeAllPopovers();
             }, 120);
         };
 

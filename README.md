@@ -18,7 +18,7 @@ Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero frameworks or b
 - **Ubuntu-Style Left Dock**:
   - **12 Customizable Color Slots**: Rendered with **5px rounded borders** and subtle drop shadows.
   - **Color Picker Popover**: Click any color slot to select it and open the color picker flyout (using modern HTML `<input type="color">` and quick swatches) to customize that slot.
-  - **Photoshop-Style Brush Size Selector**: Visual dot icons ranging from fine (6px) to jumbo (52px), defaulted to a child-friendly 20px.
+  - **Compact Brush Slot Button**: Uses a crisp SVG paintbrush icon with an indicator dot showing current color. Clicking it opens a dedicated **Brush Size Popover** with Photoshop-style dots (Fine 6px to Jumbo 52px) and a real-time stroke thickness preview.
   - **Reset UI Button**: Located below the brush selector to quickly restore default palette colors and brush size.
 
 - **Windows RDP-Style Top Toolbar**:
