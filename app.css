@@ -1144,28 +1144,34 @@ button {
     .top-toolbar {
         top: max(6px, var(--sat));
         height: 38px;
-        padding: 0 8px;
+        padding: 0 6px;
         max-width: calc(100vw - 12px);
-        gap: 6px;
+        gap: 5px;
     }
     .top-toolbar-drag-handle {
         padding-right: 0;
     }
+    .app-logo {
+        gap: 4px;
+    }
     .app-title {
-        display: none;
+        display: inline-block;
+        font-size: 13.5px;
+        letter-spacing: 0.2px;
+        padding-right: 2px;
     }
     .spark-icon {
-        width: 18px;
-        height: 18px;
+        width: 17px;
+        height: 17px;
     }
     .top-toolbar-actions {
-        gap: 4px;
+        gap: 3px;
     }
     .btn-label {
         display: none !important;
     }
     .btn-tool {
-        width: 32px;
+        width: 30px;
         height: 30px;
         padding: 0;
         justify-content: center;
@@ -1176,7 +1182,7 @@ button {
         height: 16px;
     }
     .btn-lang {
-        width: 32px;
+        width: 30px;
         height: 30px;
         padding: 0;
         justify-content: center;
@@ -1190,7 +1196,7 @@ button {
         margin: 0 1px;
     }
     .top-toolbar .btn-save {
-        width: 34px;
+        width: 32px;
         height: 30px;
         padding: 0;
         justify-content: center;
@@ -1323,8 +1329,14 @@ button {
     .top-toolbar-drag-handle {
         padding-right: 0;
     }
+    .app-logo {
+        gap: 4px;
+    }
     .app-title {
-        display: none;
+        display: inline-block;
+        font-size: 12.5px;
+        letter-spacing: 0.2px;
+        padding-right: 2px;
     }
     .spark-icon {
         width: 15px;
