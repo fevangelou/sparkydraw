@@ -87,6 +87,7 @@ SparkyDraw/
 ├── app.css       # Design tokens, responsive dock/toolbar layouts, RTL styles
 ├── app.js        # Drawing engine, pointer events, undo/redo, dual-tier storage
 ├── i18n.js       # Localization dictionary, vector SVG flags, language detection
+├── favicon.svg   # Vector star icon favicon
 └── README.md     # Documentation, feature guide, and shortcuts
 ```
 
