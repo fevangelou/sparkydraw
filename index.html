@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="app.css?t=20260929_1256">
+    <link rel="stylesheet" href="app.css?t=20260929_1336">
 </head>
 
 <body>
@@ -94,15 +94,18 @@
 
     <!-- Left Dock Toolbar (Ubuntu dock style) -->
     <aside class="left-dock" id="leftDock" role="toolbar" aria-label="Drawing tools and colors">
-        <div class="dock-scroll-container">
-            <!-- Section: Color Slots (12 slots) -->
+        <!-- Scrollable Colors (only colors scroll across all devices) -->
+        <div class="dock-colors-scroll" id="dockColorsScroll">
             <div class="dock-section dock-colors">
                 <div class="dock-section-title" id="dockColorsTitle">Colors</div>
                 <div class="color-slots-grid" id="colorSlotsGrid" role="radiogroup" aria-label="Color Palette">
                     <!-- Dynamically populated or rendered -->
                 </div>
             </div>
+        </div>
 
+        <!-- Pinned Tools Section (Brush and Reset always visible across all devices) -->
+        <div class="dock-pinned-tools" id="dockPinnedTools">
             <div class="dock-divider"></div>
 
             <!-- Section: Brush Slot Button -->
@@ -256,8 +259,8 @@
         </div>
     </div>
 
-    <script src="i18n.js?t=20260929_1256"></script>
-    <script src="app.js?t=20260929_1256"></script>
+    <script src="i18n.js?t=20260929_1336"></script>
+    <script src="app.js?t=20260929_1336"></script>
 </body>
 
 </html>

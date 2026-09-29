@@ -265,21 +265,31 @@ button {
     overflow: hidden;
     transition: width var(--transition-fast), transform var(--transition-fast);
 }
-.dock-scroll-container {
+.dock-colors-scroll {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
     /* Hide default scrollbar */
-    gap: 6px;
     padding: 2px 0;
+    scroll-behavior: smooth;
 }
-.dock-scroll-container::-webkit-scrollbar {
+.dock-colors-scroll::-webkit-scrollbar {
     display: none;
+}
+.dock-pinned-tools {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex-shrink: 0;
+    margin-top: auto;
+    padding-top: 2px;
 }
 .dock-section {
     display: flex;
@@ -540,8 +550,9 @@ button {
    Reset Button (Below Brush Selector)
    ========================================================================== */
 .dock-reset {
-    margin-top: auto;
-    padding: 4px 0 2px;
+    margin-top: 0;
+    padding: 2px 0;
+    flex-shrink: 0;
 }
 .btn-dock-reset {
     display: flex;
@@ -1046,84 +1057,133 @@ button {
 /* --- Mobile Portrait Mode (Dock shifts to bottom thumb-friendly bar) --- */
 @media (max-width: 768px) and (orientation: portrait),
 (max-width: 600px) {
+    /* Compact Top Toolbar */
     .top-toolbar {
-        top: max(8px, var(--sat));
-        height: 40px;
-        padding: 0 10px;
-        max-width: calc(100vw - 16px);
-        gap: 8px;
+        top: max(6px, var(--sat));
+        height: 38px;
+        padding: 0 8px;
+        max-width: calc(100vw - 12px);
+        gap: 6px;
+    }
+    .top-toolbar-drag-handle {
+        padding-right: 0;
     }
     .app-title {
-        font-size: 13px;
+        display: none;
+    }
+    .spark-icon {
+        width: 18px;
+        height: 18px;
+    }
+    .top-toolbar-actions {
+        gap: 4px;
     }
     .btn-label {
-        display: none;
+        display: none !important;
     }
     .btn-tool {
         width: 32px;
-        height: 32px;
+        height: 30px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 8px;
+    }
+    .btn-tool svg {
+        width: 16px;
+        height: 16px;
+    }
+    .btn-lang {
+        width: 32px;
+        height: 30px;
         padding: 0;
         justify-content: center;
     }
     .btn-lang .chevron-icon {
         display: none;
     }
+    .toolbar-divider {
+        width: 1px;
+        height: 18px;
+        margin: 0 1px;
+    }
     .btn-save {
-        height: 32px;
-        padding: 4px 10px;
-        font-size: 12px;
+        width: 34px;
+        height: 30px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 8px;
+    }
+    .btn-save svg {
+        width: 16px;
+        height: 16px;
     }
     .btn-save .btn-label {
-        display: inline;
+        display: none !important;
     }
-    /* Dock transitions to bottom horizontal floating dock */
+    /* Bottom horizontal floating dock: scroll colors, keep brush & reset pinned */
     .left-dock {
         top: auto;
         bottom: max(8px, var(--sab));
         left: max(8px, var(--sal));
         right: max(8px, var(--sar));
         width: auto;
-        height: 56px;
+        height: 52px;
         padding: 4px 8px;
         border-radius: 16px;
         flex-direction: row;
         align-items: center;
+        gap: 4px;
     }
-    .dock-scroll-container {
+    .dock-section-title {
+        display: none;
+    }
+    /* Scroll through colors only */
+    .dock-colors-scroll {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 0;
+        height: 100%;
+        display: flex;
         flex-direction: row;
         align-items: center;
         overflow-x: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
-        gap: 8px;
+        scrollbar-width: none;
         padding: 0 2px;
-        width: 100%;
-        height: 100%;
     }
-    .dock-section {
-        flex-direction: row;
-        width: auto;
-        align-items: center;
-        flex-shrink: 0;
-    }
-    .dock-section-title {
+    .dock-colors-scroll::-webkit-scrollbar {
         display: none;
-    }
-    .dock-divider {
-        width: 1px;
-        height: 28px;
-        margin: 0 4px;
-        flex-shrink: 0;
     }
     .color-slots-grid {
         flex-direction: row;
         gap: 6px;
         width: auto;
         flex-shrink: 0;
+        padding-bottom: 0;
     }
     .color-slot {
         width: 32px;
         height: 32px;
+        flex-shrink: 0;
+    }
+    /* Pinned tools: brush & reset always visible on the right */
+    .dock-pinned-tools {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: auto;
+        height: 100%;
+        flex-shrink: 0;
+        margin-top: 0;
+        margin-left: auto;
+        padding-top: 0;
+        gap: 4px;
+    }
+    .dock-divider {
+        width: 1px;
+        height: 26px;
+        margin: 0 2px;
         flex-shrink: 0;
     }
     .brush-slot-btn {
@@ -1133,13 +1193,12 @@ button {
     }
     .dock-reset {
         margin-top: 0;
-        margin-left: auto;
         padding: 0;
         flex-shrink: 0;
     }
     .btn-dock-reset {
         width: 36px;
-        height: 34px;
+        height: 32px;
         border-radius: 8px;
         padding: 0;
     }
@@ -1149,68 +1208,140 @@ button {
 }
 /* --- Mobile Landscape Mode (Compact Left Dock & Slim Top Bar) --- */
 @media (orientation: landscape) and (max-height: 560px) {
+    /* Compact Top Toolbar */
     .top-toolbar {
         top: max(4px, var(--sat));
-        height: 32px;
-        padding: 0 8px;
-        gap: 6px;
+        height: 30px;
+        padding: 0 6px;
+        max-width: calc(100vw - 12px);
+        gap: 5px;
+    }
+    .top-toolbar-drag-handle {
+        padding-right: 0;
     }
     .app-title {
         display: none;
     }
     .spark-icon {
-        width: 16px;
-        height: 16px;
+        width: 15px;
+        height: 15px;
+    }
+    .top-toolbar-actions {
+        gap: 3px;
     }
     .btn-label {
-        display: none;
+        display: none !important;
     }
     .btn-tool {
         width: 28px;
-        height: 26px;
+        height: 24px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 6px;
+    }
+    .btn-tool svg {
+        width: 14px;
+        height: 14px;
+    }
+    .btn-lang {
+        width: 28px;
+        height: 24px;
         padding: 0;
         justify-content: center;
     }
     .btn-lang .chevron-icon {
         display: none;
     }
-    .btn-save {
-        height: 26px;
-        padding: 2px 8px;
-        font-size: 11px;
+    .toolbar-divider {
+        width: 1px;
+        height: 16px;
+        margin: 0 1px;
     }
+    .btn-save {
+        width: 30px;
+        height: 24px;
+        padding: 0;
+        justify-content: center;
+        border-radius: 6px;
+    }
+    .btn-save svg {
+        width: 14px;
+        height: 14px;
+    }
+    .btn-save .btn-label {
+        display: none !important;
+    }
+    /* Left dock: scroll colors vertically, keep brush & reset pinned at bottom */
     .left-dock {
-        top: max(38px, var(--sat));
+        top: max(36px, var(--sat));
         bottom: max(6px, var(--sab));
         left: max(6px, var(--sal));
         width: 48px;
         padding: 4px 2px;
         border-radius: 12px;
+        flex-direction: column;
     }
     .dock-section-title {
         display: none;
     }
-    .dock-divider {
-        width: 28px;
-        margin: 2px 0;
+    .dock-colors-scroll {
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 2px 0;
+    }
+    .dock-colors-scroll::-webkit-scrollbar {
+        display: none;
     }
     .color-slots-grid {
+        flex-direction: column;
         gap: 4px;
+        width: 100%;
+        padding-bottom: 0;
     }
     .color-slot {
         width: 32px;
         height: 24px;
+        flex-shrink: 0;
+    }
+    /* Pinned tools at bottom */
+    .dock-pinned-tools {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        flex-shrink: 0;
+        margin-top: auto;
+        padding: 0;
+        gap: 2px;
+    }
+    .dock-divider {
+        width: 28px;
+        height: 1px;
+        margin: 2px 0;
+        flex-shrink: 0;
     }
     .brush-slot-btn {
         width: 32px;
         height: 24px;
+        flex-shrink: 0;
     }
     .dock-reset {
-        padding: 2px 0 0;
+        margin-top: 0;
+        padding: 0;
+        flex-shrink: 0;
     }
     .btn-dock-reset {
         width: 34px;
-        height: 28px;
+        height: 24px;
+        border-radius: 6px;
     }
     .reset-text {
         display: none;
