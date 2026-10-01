@@ -6,6 +6,8 @@ SparkyDraw is a simple, delightful drawing web app designed for children (and no
 
 Built with **vanilla HTML, CSS & JS** — zero external frameworks, libraries or build tools.
 
+<img width="1918" height="880" alt="desktop_2" src="https://github.com/user-attachments/assets/b9f62344-3dc3-4a4e-985d-2fd9e910fcff" />
+
 ---
 
 ## ✨ Features
