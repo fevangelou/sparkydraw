@@ -4,7 +4,7 @@
 
 SparkyDraw is a simple, delightful drawing web app designed for children (and not only!), compatible with any device and screen format (touch, pen/pointer & mouse friendly) and in any orientation. It remembers your artwork and settings across visits, exports high-resolution PNG images locally and adapts easily in small or big screens, in both portrait and landscape modes!
 
-Built with **pure Vanilla HTML5, CSS3, and JavaScript** — zero external frameworks, libraries, or build tools required.
+Built with **vanilla HTML, CSS & JS** — zero external frameworks, libraries or build tools.
 
 ---
 
