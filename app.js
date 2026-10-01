@@ -220,6 +220,16 @@
         });
     }
 
+    function updateColorSlotsActiveUI() {
+        if (!colorSlotsGrid) return;
+        const slots = colorSlotsGrid.querySelectorAll('.color-slot');
+        slots.forEach((slot, index) => {
+            const isActive = index === activeColorIndex;
+            slot.classList.toggle('active', isActive);
+            slot.setAttribute('aria-checked', isActive ? 'true' : 'false');
+        });
+    }
+
     function renderBrushSizes() {
         if (!brushSizeGroup) return;
         brushSizeGroup.innerHTML = '';
@@ -520,7 +530,7 @@
         const isAlreadyActive = activeColorIndex === index;
         activeColorIndex = index;
         savePreferences();
-        renderColorSlots();
+        updateColorSlotsActiveUI();
         updateBrushCursor();
 
         // Show popup towards the toolbar (adjacent to clicked slot)
@@ -549,8 +559,9 @@
         nativeColorInput.value = currentColor;
         popoverPreviewSwatch.style.backgroundColor = currentColor;
 
+        const targetSlot = (colorSlotsGrid && colorSlotsGrid.children[index]) || slotElement;
         const dockRect = leftDock.getBoundingClientRect();
-        const slotRect = slotElement.getBoundingClientRect();
+        const slotRect = targetSlot.getBoundingClientRect();
         const isBottomDock = dockRect.top > window.innerHeight - 130 || dockRect.width > dockRect.height * 1.5;
 
         colorPopover.hidden = false;
@@ -627,7 +638,13 @@
             nativeColorInput.value = newColor;
             popoverPreviewSwatch.style.backgroundColor = newColor;
             savePreferences();
-            renderColorSlots();
+            const slot = colorSlotsGrid && colorSlotsGrid.children[index];
+            if (slot) {
+                slot.style.backgroundColor = newColor;
+                slot.dataset.color = newColor;
+                slot.title = `Color ${index + 1}: ${newColor} (Click to select/change)`;
+                slot.setAttribute('aria-label', `Color slot ${index + 1}, ${newColor}`);
+            }
             updateBrushSlotUI();
             updateBrushCursor();
             if (brushPreviewCircle) {
